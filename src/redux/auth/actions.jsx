@@ -5,7 +5,7 @@ export const setToken = createAction('auth/setToken');
 export const clearToken = createAction('auth/clearToken');
 export const setOneUser = createAction('auth/setOneUser');
 
-export const getUserLog = () => async (dispatch) => {
+export const userLogged = () => async (dispatch) => {
   try {
     const res = await getUserLogged();
     const dataUser = res.data;
@@ -18,8 +18,8 @@ export const getUserLog = () => async (dispatch) => {
 export const signIn = (formData) => async (dispatch) => {
   try {
     const res = await login(formData);
-    const dataUser = res.data;
-    dispatch(setToken(dataUser));
+    const { token } = res.data;
+    dispatch(setToken(token));
   } catch (error) {
     console.error('Login Error:', error);
   }

@@ -39,7 +39,7 @@ export default function SignIn() {
     }
   };
 
-  if (getToken) return <Navigate to="/forums" replace />;
+  if (getToken) return <Navigate to="/dashboard-client" replace />;
 
   return (
     <section className="">
