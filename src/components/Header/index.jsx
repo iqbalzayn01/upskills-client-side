@@ -31,7 +31,7 @@ export default function Header() {
   //   };
 
   return (
-    <header className="container-base py-5">
+    <header className="container-base p-5">
       <div className="flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2">
           <img src="design/logo.svg" alt="Logo UpSkills" />
