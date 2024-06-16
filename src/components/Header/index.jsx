@@ -20,7 +20,6 @@ export default function Header() {
 
   const handleSignOut = () => {
     dispatch(clearToken());
-    console.log('SIGN OUT');
     navigate('/');
   };
 

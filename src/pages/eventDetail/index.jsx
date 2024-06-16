@@ -1,3 +1,7 @@
 export default function EventDetail() {
-  return <div>EventDetail</div>;
+  return (
+    <main>
+      <div className=""></div>
+    </main>
+  );
 }
