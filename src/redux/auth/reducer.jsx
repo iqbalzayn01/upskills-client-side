@@ -2,7 +2,6 @@ import { createReducer } from '@reduxjs/toolkit';
 import { setToken, clearToken, setOneUser } from './actions';
 
 const initialState = {
-  users: [],
   user: {},
   token: localStorage.getItem('token') || '',
 };

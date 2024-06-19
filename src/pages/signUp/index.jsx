@@ -1,15 +1,15 @@
-// import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
-// import { useNavigate, Navigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 // import { showLoading, hideLoading } from 'react-redux-loading-bar';
 
-// import { signUp } from '../../redux/auth/actions';
+import { signUp } from '../../redux/users/actions';
 import FormSignUp from './formSignUp';
 
 export default function SignUp() {
-  // const getToken = useSelector((state) => state.auth.token);
-  // const navigate = useNavigate();
-  // const dispatch = useDispatch();
+  const getToken = useSelector((state) => state.auth.token);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [passwordMatchError, setPasswordMatchError] = useState(false);
   const [formData, setFormData] = useState({
@@ -37,19 +37,20 @@ export default function SignUp() {
     }
 
     try {
-      // await dispatch(signUp(formData));
+      await dispatch(signUp(formData));
       setIsLoading(false);
+      console.log('TEST');
       // dispatch(hideLoading());
-      // navigate('/signin');
+      navigate('/signin');
     } catch (error) {
       console.error('Sign Up Error:', error);
       setError('Sign up error');
-      // setIsLoading(false);
+      setIsLoading(false);
       // dispatch(hideLoading());
     }
   };
 
-  // if (getToken) return <Navigate to="/forums" replace />;
+  if (getToken) return <Navigate to="/dashboard-peserta" replace />;
 
   return (
     <section className="">

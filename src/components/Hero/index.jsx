@@ -1,9 +1,30 @@
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+
+import { userLogged } from '../../redux/auth/actions';
 
 import CButton from '../CButton';
 
 export default function Hero() {
+  const { user } = useSelector((state) => state.auth);
+  const getToken = useSelector((state) => state.auth.token);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (getToken) {
+      dispatch(userLogged());
+    }
+  }, [dispatch, getToken]);
+
+  const daftar = () => {
+    if (getToken && user) {
+      navigate('/pelatihan');
+    } else {
+      navigate('/signup');
+    }
+  };
 
   return (
     <div className="container-base p-5">
@@ -15,9 +36,7 @@ export default function Hero() {
           Bersiap untuk Masa Depan dengan Pengetahuan dan Keterampilan Terbaru
         </p>
         <CButton
-          onClick={() => {
-            navigate('/signup');
-          }}
+          onClick={daftar}
           className="flex items-center justify-center gap-3 bg-primarycolor font-semibold text-secondarycolor text-xl px-3 py-2 rounded-lg"
         >
           <span>Daftar</span>

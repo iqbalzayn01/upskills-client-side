@@ -30,7 +30,7 @@ export default function SignIn() {
       await dispatch(signIn(formData));
       setIsLoading(false);
       // dispatch(hideLoading());
-      navigate('/dashboard-client');
+      navigate('/dashboard-peserta');
     } catch (error) {
       console.error('Error login:', error);
       setError('email or password is wrong');
@@ -39,7 +39,7 @@ export default function SignIn() {
     }
   };
 
-  if (getToken) return <Navigate to="/dashboard-client" replace />;
+  if (getToken) return <Navigate to="/dashboard-peserta" replace />;
 
   return (
     <section className="">

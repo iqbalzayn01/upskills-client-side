@@ -74,7 +74,7 @@ async function getUserLogged() {
   if (!response.ok) {
     if (response.status === 500 && responseJson.msg === 'jwt expired') {
       localStorage.removeItem('token');
-      window.location.href = '/login';
+      window.location.href = '/signin';
       return { error: true, data: null, message: 'Token expired' };
     }
     return {
@@ -98,4 +98,23 @@ async function getAllSchedules() {
   return { error: false, data: responseJson.data };
 }
 
-export { login, signup, getUserLogged, getAllSchedules };
+async function uploadDocument(document) {
+  const formData = new FormData();
+  formData.append('document', document);
+
+  const response = await fetchWithToken(`${BASE_URL}/upload-documents`, {
+    method: 'POST',
+    body: formData,
+  });
+
+  const responseJson = await response.json();
+
+  if (!response.ok) {
+    alert(responseJson.message);
+    return { error: true, data: null };
+  }
+
+  return { error: false, data: responseJson.data };
+}
+
+export { login, signup, getUserLogged, getAllSchedules, uploadDocument };

@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { userLogged } from '../../redux/auth/actions';
 
 import Header from '../../components/Header';
-import MyEvents from './myEvents';
+// import MyEvents from './myEvents';
 
 export default function DashboardClient() {
   const getToken = useSelector((state) => state.auth.token);
@@ -63,8 +63,8 @@ export default function DashboardClient() {
               </>
             )}
           </div>
-          <h1 className="font-semibold text-3xl">Daftar Kegiatan</h1>
-          <MyEvents />
+          {/* <h1 className="font-semibold text-3xl">Daftar Kegiatan</h1>
+          <MyEvents /> */}
         </div>
       </div>
     </main>

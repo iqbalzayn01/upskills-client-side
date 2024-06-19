@@ -1,13 +1,11 @@
 import Header from '../../components/Header';
-import Hero from '../../components/Hero';
 import CEventsList from '../../components/CEventsList';
 import Footer from '../../components/Footer';
 
-export default function Home() {
+export default function EventsLists() {
   return (
     <main>
       <Header />
-      <Hero />
       <CEventsList />
       <Footer />
     </main>

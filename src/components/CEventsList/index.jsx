@@ -3,18 +3,37 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { fetchAllSchedules } from '../../redux/schedules/actions';
+import { userLogged } from '../../redux/auth/actions';
 import formatDateTime from '../../utils/formatDateTime';
 
 import CButton from '../CButton';
 
-export default function EventsList() {
+export default function CEventsList() {
   const { schedules } = useSelector((state) => state.schedules);
+  const { user } = useSelector((state) => state.auth);
+  const getToken = useSelector((state) => state.auth.token);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchAllSchedules());
-  }, [dispatch]);
+    if (getToken) {
+      dispatch(userLogged());
+    }
+  }, [dispatch, getToken]);
+
+  const formatPrice = (price) => {
+    return price.toLocaleString('id-ID');
+  };
+
+  const daftar = (eventData) => {
+    if (getToken && user) {
+      navigate('/pendaftaran-kegiatan-pelatihan');
+      console.log(eventData);
+    } else {
+      navigate('/signup');
+    }
+  };
 
   return (
     <div className="container-base p-5 mb-20">
@@ -64,14 +83,12 @@ export default function EventsList() {
                   {schedule.talentID.name}
                 </p>
                 <p className="text-white mt-3">
-                  <span className="text-gray-500">Price:</span>{' '}
-                  {schedule.eventID.price}
+                  <span className="text-gray-500">Price:</span> Rp.{' '}
+                  {formatPrice(schedule.eventID.price)}
                 </p>
               </div>
               <CButton
-                onClick={() => {
-                  navigate('/signup');
-                }}
+                onClick={() => daftar(schedule.eventID._id)}
                 className="flex items-center justify-center gap-3 bg-primarycolor font-semibold text-secondarycolor text-xl px-3 py-2 rounded-lg"
               >
                 <span>Daftar</span>

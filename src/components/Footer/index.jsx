@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 import SocialMedia from './socialMedia';
 
-export const Footer = () => {
+export default function Footer() {
   return (
     <footer className="container-base grid gap-10 px-5 py-5">
       <div className="grid md:grid-cols-2 items-end gap-10">
@@ -48,4 +48,4 @@ export const Footer = () => {
       </div>
     </footer>
   );
-};
+}
