@@ -4,10 +4,12 @@ import Footer from '../../components/Footer';
 
 export default function EventsLists() {
   return (
-    <main>
+    <>
       <Header />
-      <CEventsList />
+      <main>
+        <CEventsList />
+      </main>
       <Footer />
-    </main>
+    </>
   );
 }

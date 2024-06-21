@@ -17,7 +17,7 @@ export default function Navbar({ className }) {
           </Link>
         </li>
         <li>
-          <Link to="/pelatihan" className="hover:text-slate-500">
+          <Link to="/kegiatan-pelatihan" className="hover:text-slate-500">
             Pelatihan
           </Link>
         </li>

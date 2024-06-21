@@ -11,6 +11,8 @@ import RequireAuth from './requireAuth';
 import DashboardClient from '../pages/dashboardClient';
 import Registration from '../pages/registration';
 import EventsLists from '../pages/eventsLists';
+import EventDetail from '../pages/eventDetail';
+import ValidationProcess from '../pages/registration/validationProcess';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -18,13 +20,15 @@ const router = createBrowserRouter(
       <Route path="/" element={<Home />} />
       <Route path="/signin" element={<SignIn />} />
       <Route path="/signup" element={<SignUp />} />
-      <Route path="/pelatihan" element={<EventsLists />} />
+      <Route path="/kegiatan-pelatihan" element={<EventsLists />} />
+      <Route path="/detail-kegiatan-pelatihan/:id" element={<EventDetail />} />
       <Route element={<RequireAuth />}>
         <Route path="/dashboard-peserta" element={<DashboardClient />} />
         <Route
           path="/pendaftaran-kegiatan-pelatihan"
           element={<Registration />}
         />
+        <Route path="/proses-validasi" element={<ValidationProcess />} />
       </Route>
     </>
   )

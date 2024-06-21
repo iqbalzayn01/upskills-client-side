@@ -1,64 +1,25 @@
-import { useEffect, useState, useContext } from 'react';
+import { useEffect } from 'react';
+// import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router-dom';
 
 import { userLogged } from '../../redux/auth/actions';
 import { fetchOneSchedule } from '../../redux/schedules/actions';
-import { fetchUploadDocument } from '../../redux/uploadDocument/actions';
 
-import RegistrationContext from '../../routes/registrationProvider';
 import Header from '../../components/Header';
 import CButton from '../../components/CButton';
 
 export default function Registration() {
-  const { user } = useSelector((state) => state.auth);
-  const { setIsRegistered } = useContext(RegistrationContext);
   const getToken = useSelector((state) => state.auth.token);
+  const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const [file, setFile] = useState(null);
-
-  const { eventID, scheduleID, userID } = location.state || {};
+  //  const navigate = useNavigate();
 
   useEffect(() => {
     if (getToken) {
       dispatch(userLogged());
-      dispatch(fetchOneSchedule(scheduleID));
+      dispatch(fetchOneSchedule());
     }
-  }, [getToken, dispatch, scheduleID]);
-
-  const handleFileChange = (e) => {
-    setFile(e.target.files[0]);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      if (!file) {
-        alert('Please upload a document.');
-        return;
-      }
-
-      if (file) {
-        const formData = new FormData();
-        formData.append('file', file);
-
-        dispatch(fetchUploadDocument(formData));
-        console.log('Event ID:', eventID);
-        console.log('User ID:', userID);
-        console.log('Schedule ID:', scheduleID);
-        setIsRegistered(true);
-        setFile(null);
-
-        navigate('/proses-validasi');
-      }
-    } catch (error) {
-      alert('Upload Document Error');
-      console.error('Upload Document Error:', error);
-    }
-  };
+  }, [getToken, dispatch]);
 
   return (
     <>
@@ -90,21 +51,24 @@ export default function Registration() {
                     <label className="text-sm text-gray-500">Role</label>
                     <p className="w-full text-input mt-3">{user.role}</p>
                   </div>
-                  <form onSubmit={handleSubmit} className="w-full">
+                  <form
+                    // onSubmit={handleSubmit}
+                    className="w-full"
+                  >
                     <div className="mb-4">
                       <label
-                        htmlFor="fileName"
+                        htmlFor="document"
                         className="text-sm text-gray-500"
                       >
                         Unggah Dokumen
                       </label>
                       <input
-                        id="fileName"
-                        name="fileName"
+                        id="document"
+                        name="document"
                         type="file"
                         className="block w-full px-3 py-2 mt-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                        // onChange={handleFileChange}
                         accept=".pdf,.doc,.docx"
-                        onChange={handleFileChange}
                         required
                       />
                     </div>

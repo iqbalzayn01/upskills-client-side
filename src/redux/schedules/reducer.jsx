@@ -11,13 +11,16 @@ const schedulesReducer = createReducer(initialState, (builder) => {
     .addCase(setSchedules, (state, action) => {
       state.schedules = action.payload;
     })
+    // .addCase(setOneSchedule, (state, action) => {
+    //   const index = state.schedules.findIndex(
+    //     (schedule) => schedule._id === action.payload._id
+    //   );
+    //   if (index !== -1) {
+    //     state.schedules[index] = action.payload;
+    //   }
+    // });
     .addCase(setOneSchedule, (state, action) => {
-      const index = state.schedules.findIndex(
-        (schedule) => schedule._id === action.payload._id
-      );
-      if (index !== -1) {
-        state.schedules[index] = action.payload;
-      }
+      state.schedule = action.payload;
     });
 });
 

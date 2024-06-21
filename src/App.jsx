@@ -1,7 +1,12 @@
 import { RouterProvider } from 'react-router-dom';
 
+import { RegistrationProvider } from './routes/registrationProvider';
 import router from './routes';
 
 export default function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <RegistrationProvider>
+      <RouterProvider router={router} />
+    </RegistrationProvider>
+  );
 }

@@ -23,11 +23,10 @@ export default function CEventsList() {
     }
   }, [dispatch, getToken]);
 
-  const register = (eventID, scheduleID) => {
+  const register = (eventData) => {
     if (getToken && user) {
-      navigate('/pendaftaran-kegiatan-pelatihan', {
-        state: { eventID, scheduleID, userID: user._id },
-      });
+      navigate('/pendaftaran-kegiatan-pelatihan');
+      console.log(eventData);
     } else {
       navigate('/signup');
     }
@@ -86,7 +85,7 @@ export default function CEventsList() {
                 </p>
               </div>
               <CButton
-                onClick={() => register(schedule?.eventID?._id, schedule?._id)}
+                onClick={() => register(schedule.eventID._id)}
                 className="flex items-center justify-center gap-3 bg-primarycolor font-semibold text-secondarycolor text-xl px-3 py-2 rounded-lg"
               >
                 <span>Daftar</span>

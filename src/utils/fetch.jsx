@@ -98,13 +98,21 @@ async function getAllSchedules() {
   return { error: false, data: responseJson.data };
 }
 
-async function uploadDocument(document) {
-  const formData = new FormData();
-  formData.append('document', document);
+async function getOneSchedule(id) {
+  const response = await fetchWithToken(`${BASE_URL}/schedules/${id}`);
+  const responseJson = await response.json();
 
+  if (!response.ok) {
+    return { error: true, data: null };
+  }
+
+  return { error: false, data: responseJson.data };
+}
+
+async function uploadDocuments(document) {
   const response = await fetchWithToken(`${BASE_URL}/upload-documents`, {
     method: 'POST',
-    body: formData,
+    body: document,
   });
 
   const responseJson = await response.json();
@@ -117,4 +125,35 @@ async function uploadDocument(document) {
   return { error: false, data: responseJson.data };
 }
 
-export { login, signup, getUserLogged, getAllSchedules, uploadDocument };
+async function registration({ userID, documentID, eventID }) {
+  const response = await fetch(`${BASE_URL}/create-registration`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      userID,
+      documentID,
+      eventID,
+    }),
+  });
+
+  const responseJson = await response.json();
+
+  if (!response.ok) {
+    alert(responseJson.message);
+    return { error: true, data: null };
+  }
+
+  return { error: false, data: responseJson.data };
+}
+
+export {
+  login,
+  signup,
+  getUserLogged,
+  getAllSchedules,
+  getOneSchedule,
+  uploadDocuments,
+  registration,
+};

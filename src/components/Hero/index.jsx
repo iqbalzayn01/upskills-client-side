@@ -18,9 +18,9 @@ export default function Hero() {
     }
   }, [dispatch, getToken]);
 
-  const daftar = () => {
+  const register = () => {
     if (getToken && user) {
-      navigate('/pelatihan');
+      navigate('/kegiatan-pelatihan');
     } else {
       navigate('/signup');
     }
@@ -36,7 +36,7 @@ export default function Hero() {
           Bersiap untuk Masa Depan dengan Pengetahuan dan Keterampilan Terbaru
         </p>
         <CButton
-          onClick={daftar}
+          onClick={register}
           className="flex items-center justify-center gap-3 bg-primarycolor font-semibold text-secondarycolor text-xl px-3 py-2 rounded-lg"
         >
           <span>Daftar</span>
