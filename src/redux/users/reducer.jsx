@@ -1,14 +1,30 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { createUser } from './actions';
+import { createUser, setUsers, updateUser, removeUser } from './actions';
 
 const initialState = {
   users: [],
+  user: {},
 };
 
 const usersReducer = createReducer(initialState, (builder) => {
-  builder.addCase(createUser, (state, action) => {
-    state.users.push(action.payload);
-  });
+  builder
+    .addCase(createUser, (state, action) => {
+      state.users.push(action.payload);
+    })
+    .addCase(setUsers, (state, action) => {
+      state.users = action.payload;
+    })
+    .addCase(updateUser, (state, action) => {
+      const index = state.users.findIndex(
+        (user) => user._id === action.payload._id
+      );
+      if (index !== -1) {
+        state.users[index] = action.payload;
+      }
+    })
+    .addCase(removeUser, (state, action) => {
+      state.users = state.users.filter((user) => user._id !== action.payload);
+    });
 });
 
 export default usersReducer;

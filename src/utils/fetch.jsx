@@ -87,6 +87,123 @@ async function getUserLogged() {
   return { error: false, data: responseJson.data };
 }
 
+async function getAllUsers() {
+  const response = await fetchWithToken(`${BASE_URL}/users`);
+  const responseJson = await response.json();
+
+  if (!response.ok) {
+    return { error: true, data: null };
+  }
+
+  return { error: false, data: responseJson.data };
+}
+
+async function updateUsers(id, userData) {
+  const response = await fetchWithToken(`${BASE_URL}/users/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(userData),
+  });
+
+  const responseJson = await response.json();
+
+  if (!response.ok) {
+    alert(responseJson.message);
+    return { error: true, data: null };
+  }
+
+  return { error: false, data: responseJson.data };
+}
+
+async function deleteUser(id) {
+  const response = await fetchWithToken(`${BASE_URL}/users/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    const responseJson = await response.json();
+    alert(responseJson.message);
+    return { error: true };
+  }
+
+  return { error: false };
+}
+
+async function createTalents({ name, email, no_telp }) {
+  const response = await fetchWithToken(`${BASE_URL}/create-talents`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      name,
+      email,
+      no_telp,
+    }),
+  });
+
+  const responseJson = await response.json();
+
+  if (!response.ok) {
+    alert(responseJson.message);
+    return { error: true, data: null };
+  }
+
+  return { error: false, data: responseJson.data };
+}
+
+async function getAllTalents() {
+  const response = await fetchWithToken(`${BASE_URL}/talents`);
+  const responseJson = await response.json();
+
+  if (!response.ok) {
+    return { error: true, data: null };
+  }
+
+  return { error: false, data: responseJson.data };
+}
+
+async function updateTalents(id, talentData) {
+  const response = await fetchWithToken(`${BASE_URL}/talents/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(talentData),
+  });
+
+  const responseJson = await response.json();
+
+  if (!response.ok) {
+    alert(responseJson.message);
+    return { error: true, data: null };
+  }
+
+  return { error: false, data: responseJson.data };
+}
+
+async function deleteTalent(id) {
+  const response = await fetchWithToken(`${BASE_URL}/talents/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    const responseJson = await response.json();
+    alert(responseJson.message);
+    return { error: true };
+  }
+
+  return { error: false };
+}
+
 async function getAllSchedules() {
   const response = await fetchWithToken(`${BASE_URL}/schedules`);
   const responseJson = await response.json();
@@ -107,6 +224,45 @@ async function getOneSchedule(id) {
   }
 
   return { error: false, data: responseJson.data };
+}
+
+async function createSchedules({ schedules, talentID, eventID }) {
+  const response = await fetchWithToken(`${BASE_URL}/create-schedules`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      schedules,
+      talentID,
+      eventID,
+    }),
+  });
+  const responseJson = await response.json();
+
+  if (!response.ok) {
+    alert(responseJson.message);
+    return { error: true, data: null };
+  }
+
+  return { error: false, data: responseJson.data };
+}
+
+async function deleteSchedules(id) {
+  const response = await fetchWithToken(`${BASE_URL}/schedules/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    const responseJson = await response.json();
+    alert(responseJson.message);
+    return { error: true };
+  }
+
+  return { error: false };
 }
 
 async function uploadDocuments(document) {
@@ -148,12 +304,105 @@ async function registration({ userID, documentID, eventID }) {
   return { error: false, data: responseJson.data };
 }
 
+async function createEvents({
+  name,
+  description,
+  event_status,
+  location,
+  price,
+  linkMeeting,
+}) {
+  const response = await fetchWithToken(`${BASE_URL}/create-events`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      name,
+      description,
+      event_status,
+      location,
+      price,
+      linkMeeting,
+    }),
+  });
+
+  const responseJson = await response.json();
+
+  if (!response.ok) {
+    alert(responseJson.message);
+    return { error: true, data: null };
+  }
+
+  return { error: false, data: responseJson.data };
+}
+
+async function getAllEvents() {
+  const response = await fetchWithToken(`${BASE_URL}/events`);
+  const responseJson = await response.json();
+
+  if (!response.ok) {
+    return { error: true, data: null };
+  }
+
+  return { error: false, data: responseJson.data };
+}
+
+async function updateEvents(id, eventData) {
+  const response = await fetchWithToken(`${BASE_URL}/events/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(eventData),
+  });
+
+  const responseJson = await response.json();
+
+  if (!response.ok) {
+    alert(responseJson.message);
+    return { error: true, data: null };
+  }
+
+  return { error: false, data: responseJson.data };
+}
+
+async function deleteEvent(id) {
+  const response = await fetchWithToken(`${BASE_URL}/events/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    const responseJson = await response.json();
+    alert(responseJson.message);
+    return { error: true };
+  }
+
+  return { error: false };
+}
+
 export {
   login,
   signup,
   getUserLogged,
+  getAllUsers,
+  updateUsers,
+  deleteUser,
+  createTalents,
+  getAllTalents,
+  updateTalents,
+  deleteTalent,
   getAllSchedules,
   getOneSchedule,
+  createSchedules,
+  deleteSchedules,
   uploadDocuments,
   registration,
+  createEvents,
+  getAllEvents,
+  updateEvents,
+  deleteEvent,
 };
