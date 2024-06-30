@@ -11,7 +11,7 @@ import {
   fetchDeleteSchedule,
 } from '../../../redux/schedules/actions';
 
-import Sidebar from '../../components/sidebar';
+import Sidebar from '../../components/Sidebar';
 import PopUp from '../../components/PopUp';
 import AddEventModal from './addEventModal';
 import AddScheduleModal from './addScheduleModal';

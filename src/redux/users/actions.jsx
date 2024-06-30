@@ -6,8 +6,9 @@ import {
   deleteUser,
 } from '../../utils/fetch';
 
-export const createUser = createAction('users/createUser');
 export const setUsers = createAction('users/setUsers');
+export const setOneUser = createAction('users/setOneUser');
+export const createUser = createAction('users/createUser');
 export const updateUser = createAction('users/updateUser');
 export const removeUser = createAction('users/removeUser');
 
@@ -22,6 +23,16 @@ export const signUp = (userData) => async (dispatch) => {
 };
 
 // ADMIN
+export const fetchCreateUser = (userData) => async (dispatch) => {
+  try {
+    const res = await signup(userData);
+    const dataCreateUser = res.data;
+    dispatch(createUser(dataCreateUser));
+  } catch (error) {
+    console.error('Create User Error:', error);
+  }
+};
+
 export const fetchAllUsers = () => async (dispatch) => {
   try {
     const res = await getAllUsers();

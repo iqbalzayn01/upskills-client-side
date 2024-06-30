@@ -1,5 +1,11 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { createUser, setUsers, updateUser, removeUser } from './actions';
+import {
+  setUsers,
+  setOneUser,
+  createUser,
+  updateUser,
+  removeUser,
+} from './actions';
 
 const initialState = {
   users: [],
@@ -8,11 +14,14 @@ const initialState = {
 
 const usersReducer = createReducer(initialState, (builder) => {
   builder
-    .addCase(createUser, (state, action) => {
-      state.users.push(action.payload);
-    })
     .addCase(setUsers, (state, action) => {
       state.users = action.payload;
+    })
+    .addCase(setOneUser, (state, action) => {
+      state.user = action.payload;
+    })
+    .addCase(createUser, (state, action) => {
+      state.users.push(action.payload);
     })
     .addCase(updateUser, (state, action) => {
       const index = state.users.findIndex(

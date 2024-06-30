@@ -20,7 +20,7 @@ export default function Header() {
 
   const handleSignOut = () => {
     dispatch(clearToken());
-    navigate('/');
+    navigate('/signin');
   };
 
   return (

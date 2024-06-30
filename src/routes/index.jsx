@@ -14,6 +14,13 @@ import EventsLists from '../pages/eventsLists';
 import EventDetail from '../pages/eventDetail';
 import ValidationProcess from '../pages/registration/validationProcess';
 
+// ADMIN
+import RequireAdmin from './requireAdmin';
+import Dashboard from '../admin/pages/dashboard';
+import DataUser from '../admin/pages/users';
+import DataNarasumber from '../admin/pages/talents';
+import DataKegiatan from '../admin/pages/events';
+
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
@@ -29,6 +36,12 @@ const router = createBrowserRouter(
           element={<Registration />}
         />
         <Route path="/proses-validasi" element={<ValidationProcess />} />
+      </Route>
+      <Route element={<RequireAdmin />}>
+        <Route path="/dashboard-admin/*" element={<Dashboard />} />
+        <Route path="/data-user/*" element={<DataUser />} />
+        <Route path="/data-narasumber/*" element={<DataNarasumber />} />
+        <Route path="/data-kegiatan/*" element={<DataKegiatan />} />
       </Route>
     </>
   )

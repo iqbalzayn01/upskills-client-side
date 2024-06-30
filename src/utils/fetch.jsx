@@ -281,8 +281,30 @@ async function uploadDocuments(document) {
   return { error: false, data: responseJson.data };
 }
 
+async function getAllDocuments() {
+  const response = await fetchWithToken(`${BASE_URL}/documents`);
+  const responseJson = await response.json();
+
+  if (!response.ok) {
+    return { error: true, data: null };
+  }
+
+  return { error: false, data: responseJson.data };
+}
+
+async function getOneDocument(id) {
+  const response = await fetchWithToken(`${BASE_URL}/documents/${id}`);
+  const responseJson = await response.json();
+
+  if (!response.ok) {
+    return { error: true, data: null };
+  }
+
+  return { error: false, data: responseJson.data };
+}
+
 async function registration({ userID, documentID, eventID }) {
-  const response = await fetch(`${BASE_URL}/create-registration`, {
+  const response = await fetchWithToken(`${BASE_URL}/create-registration`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -291,6 +313,48 @@ async function registration({ userID, documentID, eventID }) {
       userID,
       documentID,
       eventID,
+    }),
+  });
+
+  const responseJson = await response.json();
+
+  if (!response.ok) {
+    alert(responseJson.message);
+    return { error: true, data: null };
+  }
+
+  return { error: false, data: responseJson.data };
+}
+
+async function validateUser(userID) {
+  const response = await fetchWithToken(`${BASE_URL}/validate`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      userID,
+    }),
+  });
+
+  const responseJson = await response.json();
+
+  if (!response.ok) {
+    alert(responseJson.message);
+    return { error: true, data: null };
+  }
+
+  return { error: false, data: responseJson.data };
+}
+
+async function userStatus(userID) {
+  const response = await fetchWithToken(`${BASE_URL}/status/${userID}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      userID,
     }),
   });
 
@@ -400,7 +464,11 @@ export {
   createSchedules,
   deleteSchedules,
   uploadDocuments,
+  getAllDocuments,
+  getOneDocument,
   registration,
+  validateUser,
+  userStatus,
   createEvents,
   getAllEvents,
   updateEvents,

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { fetchCreateUser, fetchUpdateUser } from '../../redux/users/actions';
+import { fetchCreateUser, fetchUpdateUser } from '../../../redux/users/actions';
 
 export default function AddUserModal({ onClose, isEdit, user }) {
   const [error, setError] = useState('');

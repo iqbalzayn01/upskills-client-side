@@ -18,7 +18,7 @@ export default function Sidebar() {
   const handleLogout = () => {
     dispatch(clearToken());
     setIsPopUpOpen(false);
-    navigate('/login');
+    navigate('/signin');
   };
 
   return (
@@ -30,7 +30,7 @@ export default function Sidebar() {
           </Link>
         </li>
         <li className="w-full hover:bg-slate-500 px-4 py-4 mb-4">
-          <Link to="/dashboard">Dashboard</Link>
+          <Link to="/dashboard-admin">Dashboard</Link>
         </li>
         <li className="w-full hover:bg-slate-500 px-4 py-4 mb-4">
           <Link to="/data-user">Data User</Link>

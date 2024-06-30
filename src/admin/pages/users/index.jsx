@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 
 import { fetchAllUsers, fetchDeleteUser } from '../../../redux/users/actions';
 
-import Sidebar from '../../components/sidebar';
+import Sidebar from '../../components/Sidebar';
 import PopUp from '../../components/PopUp';
 import AddUserModal from './addUserModal';
 

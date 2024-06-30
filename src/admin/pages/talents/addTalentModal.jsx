@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import {
   fetchCreateTalent,
   fetchUpdateTalent,
-} from '../../redux/talents/actions';
+} from '../../../redux/talents/actions';
 
 export default function AddTalentModal({ onClose, isEdit, talentData }) {
   const [error, setError] = useState('');

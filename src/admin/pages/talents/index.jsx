@@ -6,7 +6,7 @@ import {
   fetchDeleteTalent,
 } from '../../../redux/talents/actions';
 
-import Sidebar from '../../components/sidebar';
+import Sidebar from '../../components/Sidebar';
 import PopUp from '../../components/PopUp';
 import AddTalentModal from './addTalentModal';
 

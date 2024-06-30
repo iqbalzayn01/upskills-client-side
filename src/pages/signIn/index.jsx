@@ -1,13 +1,14 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
-import { useNavigate, Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 // import { showLoading, hideLoading } from 'react-redux-loading-bar';
 
 import { signIn } from '../../redux/auth/actions';
+
 import FormSignIn from './formSignIn';
 
 export default function SignIn() {
-  const getToken = useSelector((state) => state.auth.token);
+  const { token, user } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
@@ -30,7 +31,12 @@ export default function SignIn() {
       await dispatch(signIn(formData));
       setIsLoading(false);
       // dispatch(hideLoading());
-      navigate('/dashboard-peserta');
+
+      if (user?.role === 'admin') {
+        navigate('/dashboard-admin');
+      } else {
+        navigate('/dashboard-peserta');
+      }
     } catch (error) {
       console.error('Error login:', error);
       setError('email or password is wrong');
@@ -39,7 +45,9 @@ export default function SignIn() {
     }
   };
 
-  if (getToken) return <Navigate to="/dashboard-peserta" replace />;
+  if (token && user) {
+    return null; // Sementara tunggu useEffect mengarahkan
+  }
 
   return (
     <section className="">

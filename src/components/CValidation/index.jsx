@@ -1,14 +1,14 @@
-import { useContext } from 'react';
-import { Navigate } from 'react-router-dom';
+// import { useContext } from 'react';
+// import { Navigate } from 'react-router-dom';
 
-import RegistrationContext from '../../routes/registrationProvider';
+// import RegistrationContext from '../../routes/registrationProvider';
 
 export default function CValidation() {
-  const { isRegistered } = useContext(RegistrationContext);
+  // const { isRegistered } = useContext(RegistrationContext);
 
-  if (!isRegistered) {
-    return <Navigate to="/" />;
-  }
+  // if (!isRegistered) {
+  //   return <Navigate to="/" />;
+  // }
 
   return (
     <div>

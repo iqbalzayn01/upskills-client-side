@@ -1,22 +1,19 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
-import { fetchUser } from '../../../redux/auth/actions';
+import { userLogged } from '../../../redux/auth/actions';
 
-import Sidebar from '../../components/sidebar';
+import Sidebar from '../../components/Sidebar';
 
 const Dashboard = () => {
-  const [fetchDone, setFetchDone] = useState(false);
-  const getToken = useSelector((state) => state.auth.token);
-  const getUser = useSelector((state) => state.auth.user);
+  const { token, user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (getUser && getToken && !fetchDone) {
-      dispatch(fetchUser());
-      setFetchDone(true);
+    if (token) {
+      dispatch(userLogged());
     }
-  }, [getUser, getToken, fetchDone, dispatch]);
+  }, [token, dispatch]);
 
   return (
     <div className="flex">
@@ -24,7 +21,12 @@ const Dashboard = () => {
       <main className="ml-64 p-10">
         <h1 className="text-2xl">Dashboard</h1>
         <p className="mb-3">Selamat datang di dashboard admin!</p>
-        {getToken && <h1 className="text-2xl">{`Halo, ${getUser.name}`}</h1>}
+        {token && (
+          <>
+            <h1 className="text-2xl">{`Halo, ${user.name}`}</h1>
+            <h1 className="text-2xl">{user.role}</h1>
+          </>
+        )}
       </main>
     </div>
   );
