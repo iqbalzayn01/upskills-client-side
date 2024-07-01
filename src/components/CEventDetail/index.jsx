@@ -6,6 +6,7 @@ import { fetchOneSchedule } from '../../redux/schedules/actions';
 import { userLogged } from '../../redux/auth/actions';
 import formatDateTime from '../../utils/formatDateTime';
 import formatPrice from '../../utils/formatPrice';
+import config from '../../config';
 
 import CButton from '../CButton';
 
@@ -16,6 +17,7 @@ export default function CEventDetail() {
   const getToken = useSelector((state) => state.auth.token);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const BASE_URL = config.url;
 
   useEffect(() => {
     dispatch(fetchOneSchedule(id));
@@ -36,11 +38,13 @@ export default function CEventDetail() {
 
   return (
     <div className="flex w-full flex-col gap-6">
-      <img
-        src="#"
-        alt="Images"
-        className="w-full h-full object-cover rounded-lg bg-gray-200"
-      />
+      {schedule.eventID.imageID && schedule.eventID.imageID.fileName && (
+        <img
+          src={`${BASE_URL}${schedule.eventID.imageID.fileName}`}
+          alt={schedule.eventID.name}
+          className="w-full h-auto rounded-lg"
+        />
+      )}
       <div className="flex flex-col items-center gap-5">
         <h2 className="text-3xl font-semibold text-primarycolor hover:underline">
           {schedule?.eventID?.name}

@@ -7,8 +7,6 @@ import {
   fetchUpdateEvent,
 } from '../../../redux/events/actions';
 
-import { fetchUploadImages } from '../../../redux/uploadImages/actions';
-
 export default function AddEventModal({ onClose, isEdit, eventData }) {
   const [error, setError] = useState('');
   const [formData, setFormData] = useState({
@@ -20,8 +18,6 @@ export default function AddEventModal({ onClose, isEdit, eventData }) {
     linkMeeting: '-',
   });
   const dispatch = useDispatch();
-
-  const [fileImage, setFileImage] = useState(null);
 
   useEffect(() => {
     if (isEdit && eventData) {
@@ -35,26 +31,8 @@ export default function AddEventModal({ onClose, isEdit, eventData }) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleFileChange = (e) => {
-    setFileImage(e.target.files[0]);
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!fileImage && !isEdit) {
-      alert('Mohon untuk mengunggah gambar.');
-      return;
-    }
-
-    let imageID;
-    if (fileImage) {
-      const formDataImage = new FormData();
-      formDataImage.append('image', fileImage);
-
-      const response = await dispatch(fetchUploadImages(formDataImage));
-      imageID = response._id;
-    }
 
     const { name, description, location, event_status, price } = formData;
 
@@ -63,19 +41,13 @@ export default function AddEventModal({ onClose, isEdit, eventData }) {
       return;
     }
 
-    const newEventData = {
-      ...formData,
-      ...(imageID && { imageID }),
-    };
-
-    if (isEdit) {
-      dispatch(fetchUpdateEvent(eventData._id, newEventData));
+    if (eventData) {
+      dispatch(fetchUpdateEvent(eventData._id, formData));
     } else {
-      dispatch(fetchCreateEvent(newEventData));
+      dispatch(fetchCreateEvent(formData));
     }
 
     onClose();
-    window.location.reload();
   };
 
   return (
@@ -154,22 +126,6 @@ export default function AddEventModal({ onClose, isEdit, eventData }) {
               required
             />
           </div>
-          {!isEdit && (
-            <div className="mb-4">
-              <label htmlFor="fileName" className="text-sm text-gray-500">
-                Unggah Gambar
-              </label>
-              <input
-                id="fileName"
-                name="fileName"
-                type="file"
-                className="block w-full px-3 py-2 mt-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                accept=".jpg,.jpeg,.png"
-                onChange={handleFileChange}
-                required
-              />
-            </div>
-          )}
           <div className="flex justify-end">
             <button
               type="button"

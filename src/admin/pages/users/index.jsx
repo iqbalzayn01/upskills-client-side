@@ -53,7 +53,7 @@ export default function DataUser() {
             Tambah
           </button>
         </div>
-        <hr className="mb-4" />
+        <hr className="border border-gray-300 mb-10" />
         {error && <p className="text-red-500">Error fetching data: {error}</p>}
         <div className="overflow-x-auto">
           <table className="w-full bg-white">

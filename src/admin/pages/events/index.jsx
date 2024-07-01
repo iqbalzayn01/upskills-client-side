@@ -1,6 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { format } from 'date-fns';
+import config from '../../../config';
 
 import {
   fetchAllEvents,
@@ -26,6 +27,7 @@ export default function DataKegiatan() {
   const [isPopUpOpen, setIsPopUpOpen] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const dispatch = useDispatch();
+  const BASE_URL = config.url;
 
   useEffect(() => {
     dispatch(fetchAllEvents());
@@ -86,73 +88,65 @@ export default function DataKegiatan() {
             Tambah
           </button>
         </div>
-        <hr className="mb-10" />
+        <hr className=" border border-gray-300 mb-10" />
         {error && <p className="text-red-500">Error fetching data: {error}</p>}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-          {events &&
+          {events && events.length > 0 ? (
             events.map((event) => {
+              const eventSchedules = schedules.filter(
+                (schedule) => schedule.eventID._id === event._id
+              );
+
               return (
                 <div
                   key={event._id}
-                  className="card border border-slate-400 p-10 rounded-lg"
+                  className="card border border-slate-400 p-6 rounded-lg"
                 >
                   <div className="flex flex-col gap-6">
+                    {event.imageID && event.imageID.fileName && (
+                      <img
+                        src={`${BASE_URL}${event.imageID.fileName}`}
+                        alt={event.name}
+                        className="w-full h-auto rounded-lg"
+                      />
+                    )}
                     <h2 className="text-2xl font-medium">{event.name}</h2>
-                    <hr />
+                    <hr className=" border border-gray-300" />
                     <p>{event.description}</p>
-                    {schedules &&
-                      schedules
-                        .filter(
-                          (schedule) => schedule.eventID._id === event._id
-                        )
-                        .map((schedule, index) => (
-                          <p key={index}>Talent: {schedule.talentID.name}</p>
-                        ))}
-                    <p>Link: {event.linkMeeting}</p>
-                    <div className="flex flex-col gap-2">
-                      <p className="font-semibold">Lokasi:</p>
-                      <p>{event.location}</p>
-                    </div>
                     <div className="flex flex-col">
-                      <p className="font-semibold">Jadwal:</p>
-                      <button
-                        className="bg-emerald-500 text-white px-2 py-1 rounded"
-                        onClick={() => handleCreateSchedule(event._id)}
-                      >
-                        Atur Jadwal
-                      </button>
-                      {schedules &&
-                        schedules
-                          .filter(
-                            (schedule) => schedule.eventID._id === event._id
-                          )
-                          .map((schedule, index) => (
-                            <div key={index}>
-                              <div>
-                                {schedule.schedules.map((time, subIndex) => (
-                                  <div key={subIndex}>
-                                    <p>
-                                      mulai: {formatDateTime(time.start_time)}
-                                    </p>
-                                    <p>
-                                      selesai: {formatDateTime(time.end_time)}
-                                    </p>
-                                  </div>
-                                ))}
-                              </div>
-                              <div className="flex items-center gap-2">
-                                {/*  */}
-                                <button
-                                  className="bg-red-500 text-white px-2 py-1 rounded"
-                                  onClick={() =>
-                                    handleDeleteSchedule(schedule._id)
-                                  }
-                                >
-                                  Hapus
-                                </button>
-                              </div>
+                      {eventSchedules.length > 0 ? (
+                        eventSchedules.map((schedule, index) => (
+                          <div key={index}>
+                            <p>Talent: {schedule.talentID.name}</p>
+                            <div>
+                              <p className="font-semibold">Jadwal:</p>
+                              {schedule.schedules.map((time, subIndex) => (
+                                <div key={subIndex}>
+                                  <p>
+                                    Mulai: {formatDateTime(time.start_time)}
+                                  </p>
+                                  <p>
+                                    Selesai: {formatDateTime(time.end_time)}
+                                  </p>
+                                </div>
+                              ))}
                             </div>
-                          ))}
+                            <button
+                              className="bg-red-500 text-white px-2 py-1 rounded"
+                              onClick={() => handleDeleteSchedule(schedule._id)}
+                            >
+                              Hapus
+                            </button>
+                          </div>
+                        ))
+                      ) : (
+                        <button
+                          className="bg-emerald-500 text-white px-2 py-1 rounded"
+                          onClick={() => handleCreateSchedule(event._id)}
+                        >
+                          Atur Jadwal
+                        </button>
+                      )}
                       {scheduleOpen && (
                         <AddScheduleModal
                           onClose={() => setScheduleOpen(false)}
@@ -161,7 +155,11 @@ export default function DataKegiatan() {
                         />
                       )}
                     </div>
-
+                    <p>Link: {event.linkMeeting}</p>
+                    <div className="flex flex-col gap-2">
+                      <p className="font-semibold">Lokasi:</p>
+                      <p>{event.location}</p>
+                    </div>
                     <div className="flex items-start justify-between">
                       <div className="flex flex-col gap-2">
                         <p className="font-semibold">Status Kegiatan:</p>
@@ -176,8 +174,8 @@ export default function DataKegiatan() {
                         </p>
                       </div>
                     </div>
-                    <hr className="bg-slate-400" />
-                    <div className="flex items-center gap-2">
+                    <hr className=" border border-gray-300" />
+                    <div className="grid gap-2">
                       <button
                         className="bg-blue-500 text-white px-2 py-1 rounded"
                         onClick={() => handleEdit(event)}
@@ -203,7 +201,12 @@ export default function DataKegiatan() {
                   </div>
                 </div>
               );
-            })}
+            })
+          ) : (
+            <p className="text-gray-500">
+              Belum ada kegiatan pelatihan yang ditambahkan
+            </p>
+          )}
         </div>
       </main>
       {isModalOpen && (

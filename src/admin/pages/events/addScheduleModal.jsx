@@ -31,8 +31,9 @@ export default function AddScheduleModal({ onClose, isEdit, eventID }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await dispatch(fetchCreateSchedule({ ...formData, eventID }));
+      dispatch(fetchCreateSchedule({ ...formData, eventID }));
       onClose();
+      window.location.reload();
     } catch (error) {
       setError('Error creating schedule');
     }

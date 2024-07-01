@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import config from '../../config';
 
 import { fetchAllSchedules } from '../../redux/schedules/actions';
 import { userLogged } from '../../redux/auth/actions';
@@ -15,6 +16,7 @@ export default function CEventsList() {
   const getToken = useSelector((state) => state.auth.token);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const BASE_URL = config.url;
 
   useEffect(() => {
     dispatch(fetchAllSchedules());
@@ -39,18 +41,21 @@ export default function CEventsList() {
         <h2 className="font-semibold text-2xl text-center mb-5">
           Daftar Kegiatan Pelatihan
         </h2>
-        {schedules &&
+        {schedules && schedules.length > 0 ? (
           schedules.map((schedule, index) => (
             <div
               key={index}
               className="grid grid-cols-3 gap-5 p-6 bg-secondarycolor rounded-xl"
             >
               <div className="col-span-1">
-                <img
-                  src="#"
-                  alt="Images"
-                  className="w-full h-full object-cover rounded-lg bg-gray-200"
-                />
+                {schedule.eventID.imageID &&
+                  schedule.eventID.imageID.fileName && (
+                    <img
+                      src={`${BASE_URL}${schedule.eventID.imageID.fileName}`}
+                      alt={schedule.eventID.name}
+                      className="w-full h-auto rounded-lg"
+                    />
+                  )}
               </div>
               <div className="col-span-2 flex flex-col justify-between">
                 <Link
@@ -106,7 +111,12 @@ export default function CEventsList() {
                 </svg>
               </CButton>
             </div>
-          ))}
+          ))
+        ) : (
+          <p className="text-center text-gray-500">
+            Belum ada kegiatan pelatihan yang tersedia
+          </p>
+        )}
       </div>
     </div>
   );

@@ -375,6 +375,7 @@ async function createEvents({
   location,
   price,
   linkMeeting,
+  imageID,
 }) {
   const response = await fetchWithToken(`${BASE_URL}/create-events`, {
     method: 'POST',
@@ -388,6 +389,7 @@ async function createEvents({
       location,
       price,
       linkMeeting,
+      imageID,
     }),
   });
 
@@ -448,6 +450,44 @@ async function deleteEvent(id) {
   return { error: false };
 }
 
+async function uploadImages(images) {
+  const response = await fetchWithToken(`${BASE_URL}/images`, {
+    method: 'POST',
+    body: images,
+  });
+
+  const responseJson = await response.json();
+
+  if (!response.ok) {
+    alert(responseJson.message);
+    return { error: true, data: null };
+  }
+
+  return { error: false, data: responseJson.data };
+}
+
+async function getAllImages() {
+  const response = await fetchWithToken(`${BASE_URL}/images`);
+  const responseJson = await response.json();
+
+  if (!response.ok) {
+    return { error: true, data: null };
+  }
+
+  return { error: false, data: responseJson.data };
+}
+
+async function getOneImages(id) {
+  const response = await fetchWithToken(`${BASE_URL}/images/${id}`);
+  const responseJson = await response.json();
+
+  if (!response.ok) {
+    return { error: true, data: null };
+  }
+
+  return { error: false, data: responseJson.data };
+}
+
 export {
   login,
   signup,
@@ -473,4 +513,7 @@ export {
   getAllEvents,
   updateEvents,
   deleteEvent,
+  uploadImages,
+  getAllImages,
+  getOneImages,
 };

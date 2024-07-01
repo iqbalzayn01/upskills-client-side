@@ -8,6 +8,7 @@ import registrationReducer from '../registration/reducer';
 // ADMIN
 import eventsReducer from '../events/reducer';
 import talentsReducer from '../talents/reducer';
+import uploadImagesReducer from '../uploadImages/reducer';
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -16,6 +17,7 @@ const rootReducer = combineReducers({
   uploadDocuments: uploadDocumentsReducer,
   registration: registrationReducer,
   events: eventsReducer,
+  images: uploadImagesReducer,
   talents: talentsReducer,
   // loadingBar: loadingBarReducer,
 });
