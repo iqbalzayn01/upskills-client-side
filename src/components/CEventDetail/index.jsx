@@ -38,7 +38,7 @@ export default function CEventDetail() {
 
   return (
     <div className="flex w-full flex-col gap-6">
-      {schedule.eventID.imageID && schedule.eventID.imageID.fileName && (
+      {schedule?.eventID?.imageID && schedule?.eventID?.imageID?.fileName && (
         <img
           src={`${BASE_URL}${schedule.eventID.imageID.fileName}`}
           alt={schedule.eventID.name}

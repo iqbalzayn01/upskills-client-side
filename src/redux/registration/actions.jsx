@@ -1,24 +1,56 @@
 import { createAction } from '@reduxjs/toolkit';
-import { validateUser, userStatus } from '../../utils/fetch';
+import {
+  registration,
+  getAllRegistration,
+  getOneRegistration,
+  deleteRegistration,
+} from '../../utils/fetch';
 
-export const setRegistrationStatus = createAction('SET_REGISTRATION_STATUS');
+export const setRegistration = createAction('registration/setRegistration');
+export const setOneRegistration = createAction(
+  'registration/setOneRegistration'
+);
+export const createRegistration = createAction(
+  'registration/createRegistration'
+);
+export const removeRegister = createAction('registration/removeRegister');
 
-export const validateUserAction = (userID) => async (dispatch) => {
+export const fetchAllRegistration = () => async (dispatch) => {
   try {
-    const data = await validateUser(userID);
-    dispatch(setRegistrationStatus(data.status));
-    localStorage.removeItem('registrationStatus');
+    const res = await getAllRegistration();
+    const dataRegister = res.data;
+    dispatch(setRegistration(dataRegister));
   } catch (error) {
-    console.error('Error validating user:', error);
+    console.error('Get All Registrations Error:', error);
   }
 };
 
-export const fetchUserStatusAction = (userID) => async (dispatch) => {
+export const fetchOneRegistration = (registrationID) => async (dispatch) => {
   try {
-    const data = await userStatus(userID);
-    dispatch(setRegistrationStatus(data.status));
-    localStorage.setItem('registrationStatus', data.status);
+    const res = await getOneRegistration(registrationID);
+    const dataRegister = res.data;
+    dispatch(setOneRegistration(dataRegister));
   } catch (error) {
-    console.error('Error fetching user status:', error);
+    alert('Gagal Menampilkan Data Pendaftaran');
+    console.error('Get One Registrations Error:', error);
+  }
+};
+
+export const fetchCreateRegistration = (registerData) => async (dispatch) => {
+  try {
+    const res = await registration(registerData);
+    const dataCreateRegistration = res.data;
+    dispatch(createRegistration(dataCreateRegistration));
+  } catch (error) {
+    console.error('Create Registration Error:', error);
+  }
+};
+
+export const fetchDeleteRegister = (id) => async (dispatch) => {
+  try {
+    await deleteRegistration(id);
+    dispatch(removeRegister(id));
+  } catch (error) {
+    console.error('Delete Registration Error:', error);
   }
 };

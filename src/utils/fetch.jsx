@@ -80,7 +80,7 @@ async function getUserLogged() {
     return {
       error: true,
       data: null,
-      message: responseJson.msg || 'Fetch failed',
+      message: responseJson?.msg || 'Fetch failed',
     };
   }
 
@@ -303,6 +303,42 @@ async function getOneDocument(id) {
   return { error: false, data: responseJson.data };
 }
 
+async function updateDocuments(id, dataDocument) {
+  const response = await fetchWithToken(`${BASE_URL}/documents/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(dataDocument),
+  });
+
+  const responseJson = await response.json();
+
+  if (!response.ok) {
+    alert(responseJson.message);
+    return { error: true, data: null };
+  }
+
+  return { error: false, data: responseJson.data };
+}
+
+async function deleteDocument(id) {
+  const response = await fetchWithToken(`${BASE_URL}/documents/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    const responseJson = await response.json();
+    alert(responseJson.message);
+    return { error: true };
+  }
+
+  return { error: false };
+}
+
 async function registration({ userID, documentID, eventID }) {
   const response = await fetchWithToken(`${BASE_URL}/create-registration`, {
     method: 'POST',
@@ -326,46 +362,43 @@ async function registration({ userID, documentID, eventID }) {
   return { error: false, data: responseJson.data };
 }
 
-async function validateUser(userID) {
-  const response = await fetchWithToken(`${BASE_URL}/validate`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      userID,
-    }),
-  });
-
+async function getAllRegistration() {
+  const response = await fetchWithToken(`${BASE_URL}/registration`);
   const responseJson = await response.json();
 
   if (!response.ok) {
-    alert(responseJson.message);
     return { error: true, data: null };
   }
 
   return { error: false, data: responseJson.data };
 }
 
-async function userStatus(userID) {
-  const response = await fetchWithToken(`${BASE_URL}/status/${userID}`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      userID,
-    }),
-  });
-
+async function getOneRegistration(id) {
+  const response = await fetchWithToken(`${BASE_URL}/registration/${id}`);
   const responseJson = await response.json();
 
   if (!response.ok) {
-    alert(responseJson.message);
     return { error: true, data: null };
   }
 
   return { error: false, data: responseJson.data };
+}
+
+async function deleteRegistration(id) {
+  const response = await fetchWithToken(`${BASE_URL}/registration/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    const responseJson = await response.json();
+    alert(responseJson.message);
+    return { error: true };
+  }
+
+  return { error: false };
 }
 
 async function createEvents({
@@ -506,9 +539,12 @@ export {
   uploadDocuments,
   getAllDocuments,
   getOneDocument,
+  updateDocuments,
+  deleteDocument,
   registration,
-  validateUser,
-  userStatus,
+  getAllRegistration,
+  getOneRegistration,
+  deleteRegistration,
   createEvents,
   getAllEvents,
   updateEvents,

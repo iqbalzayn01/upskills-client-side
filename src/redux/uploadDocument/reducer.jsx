@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { uploadDocument, setDocuments } from './actions';
+import { uploadDocument, setDocuments, removeDocument } from './actions';
 
 const initialState = {
   documents: [],
@@ -16,6 +16,11 @@ const uploadDocumentsReducer = createReducer(initialState, (builder) => {
     })
     .addCase(setDocuments, (state, action) => {
       state.documents = action.payload;
+    })
+    .addCase(removeDocument, (state, action) => {
+      state.documents = state.documents.filter(
+        (document) => document._id !== action.payload
+      );
     });
   // .addMatcher(
   //   (action) => action.type.endsWith('/pending'),

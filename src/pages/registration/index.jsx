@@ -1,22 +1,17 @@
-import {
-  useEffect,
-  useState,
-  // useContext
-} from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useLocation, useNavigate, Navigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { userLogged } from '../../redux/auth/actions';
 import { fetchOneSchedule } from '../../redux/schedules/actions';
 import { fetchUploadDocument } from '../../redux/uploadDocument/actions';
+import { fetchCreateRegistration } from '../../redux/registration/actions';
 
-// import RegistrationContext from '../../routes/registrationProvider';
 import Header from '../../components/Header';
 import CButton from '../../components/CButton';
 
 export default function Registration() {
   const { user } = useSelector((state) => state.auth);
-  // const { setIsRegistered } = useContext(RegistrationContext);
   const getToken = useSelector((state) => state.auth.token);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -52,23 +47,23 @@ export default function Registration() {
         const response = await dispatch(fetchUploadDocument(formData));
         const documentID = response._id;
 
-        console.log('Event ID:', eventID);
-        console.log('User ID:', userID);
-        console.log('Document ID:', documentID);
-        // setIsRegistered(true);
+        const registerData = { eventID, documentID, userID };
+
+        if (!eventID || !documentID || !userID) {
+          alert('Semua data harus diisi.');
+          return;
+        }
+
+        await dispatch(fetchCreateRegistration(registerData));
         setFile(null);
 
         navigate('/proses-validasi');
       }
     } catch (error) {
-      alert('Upload Document Error');
+      alert('Dokumen gagal diunggah');
       console.error('Upload Document Error:', error);
     }
   };
-
-  if (status === 'pending') {
-    return <Navigate to="/proses-validasi" />;
-  }
 
   return (
     <>
