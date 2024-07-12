@@ -5,6 +5,7 @@ import schedulesReducer from '../schedules/reducer';
 import usersReducer from '../users/reducer';
 import uploadDocumentsReducer from '../uploadDocument/reducer';
 import registrationReducer from '../registration/reducer';
+import paymentReducer from '../payments/reducer';
 // ADMIN
 import eventsReducer from '../events/reducer';
 import talentsReducer from '../talents/reducer';
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
   events: eventsReducer,
   images: uploadImagesReducer,
   talents: talentsReducer,
+  payments: paymentReducer,
   // loadingBar: loadingBarReducer,
 });
 

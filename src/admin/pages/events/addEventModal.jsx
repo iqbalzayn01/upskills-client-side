@@ -18,6 +18,7 @@ export default function AddEventModal({ onClose, isEdit, eventData }) {
     location: '',
     price: '',
     linkMeeting: '-',
+    kuota: '',
   });
   const dispatch = useDispatch();
 
@@ -130,7 +131,7 @@ export default function AddEventModal({ onClose, isEdit, eventData }) {
             />
           </div>
           <div className="mb-4">
-            <label className="block mb-1">Status Event</label>
+            <label className="block mb-1">Status Kegiatan</label>
             <select
               name="event_status"
               value={formData.event_status}
@@ -139,16 +140,28 @@ export default function AddEventModal({ onClose, isEdit, eventData }) {
               required
             >
               <option value="">Pilih Status</option>
-              <option value="online">Online</option>
-              <option value="offline">Offline</option>
+              <option value="buka">Buka</option>
+              <option value="tutup">Tutup</option>
+              <option value="selesai">Selesai</option>
             </select>
           </div>
           <div className="mb-4">
-            <label className="block mb-1">Harga Event</label>
+            <label className="block mb-1">Harga</label>
             <input
-              type="text"
+              type="number"
               name="price"
               value={formData.price}
+              onChange={handleChange}
+              className="w-full p-2 border rounded"
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block mb-1">Kuota</label>
+            <input
+              type="number"
+              name="kuota"
+              value={formData.kuota}
               onChange={handleChange}
               className="w-full p-2 border rounded"
               required

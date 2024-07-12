@@ -8,6 +8,7 @@ export default function AddScheduleModal({ onClose, isEdit, eventID }) {
   const [error, setError] = useState('');
   const [formData, setFormData] = useState({
     schedules: [{ start_time: '', end_time: '' }],
+    batas_daftar: '',
     talentID: '',
   });
   const dispatch = useDispatch();
@@ -20,12 +21,16 @@ export default function AddScheduleModal({ onClose, isEdit, eventID }) {
   const handleChange = (index, e) => {
     const { name, value } = e.target;
     const schedules = [...formData.schedules];
-    schedules[index][name] = value;
+    schedules[index][name] = value || '';
     setFormData({ ...formData, schedules });
   };
 
+  const handleBatasDaftar = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
   const handleTalentChange = (e) => {
-    setFormData({ ...formData, talentID: e.target.value });
+    setFormData({ ...formData, talentID: e.target.value || '' });
   };
 
   const handleSubmit = async (e) => {
@@ -54,7 +59,7 @@ export default function AddScheduleModal({ onClose, isEdit, eventID }) {
                 <input
                   type="datetime-local"
                   name="start_time"
-                  value={schedule.start_time}
+                  value={schedule.start_time || ''}
                   onChange={(e) => handleChange(index, e)}
                   className="w-full p-2 border rounded"
                   required
@@ -65,8 +70,19 @@ export default function AddScheduleModal({ onClose, isEdit, eventID }) {
                 <input
                   type="datetime-local"
                   name="end_time"
-                  value={schedule.end_time}
+                  value={schedule.end_time || ''}
                   onChange={(e) => handleChange(index, e)}
+                  className="w-full p-2 border rounded"
+                  required
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block mb-1">Batas Pendaftaran</label>
+                <input
+                  type="datetime-local"
+                  name="batas_daftar"
+                  value={schedule.batas_daftar}
+                  onChange={handleBatasDaftar}
                   className="w-full p-2 border rounded"
                   required
                 />
@@ -77,7 +93,7 @@ export default function AddScheduleModal({ onClose, isEdit, eventID }) {
             <label className="block mb-1">Talent</label>
             <select
               name="talentID"
-              value={formData.talentID}
+              value={formData.talentID || ''}
               onChange={handleTalentChange}
               className="w-full p-2 border rounded"
               required

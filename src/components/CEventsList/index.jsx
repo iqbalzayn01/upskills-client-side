@@ -67,6 +67,15 @@ export default function CEventsList() {
                 <p className="text-2xl text-white mt-2">
                   {schedule.eventID.description}
                 </p>
+                <div className="flex flex-col gap-2">
+                  <p className="bg-emerald-500 text-white text-center font-medium uppercase px-3 py-2 rounded-lg">
+                    {schedule.eventID.event_status}
+                  </p>
+                </div>
+                <p className="text-white mt-3">
+                  <span className="text-gray-500">Kuota:</span>{' '}
+                  {schedule.eventID.kuota}
+                </p>
                 <div className="mt-2">
                   {schedule.schedules.map((time, subIndex) => (
                     <div key={subIndex}>

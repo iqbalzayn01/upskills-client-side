@@ -131,6 +131,10 @@ export default function DataKegiatan() {
                                 </div>
                               ))}
                             </div>
+                            <p className="font-semibold">
+                              batas Pendaftaran:{' '}
+                              {formatDateTime(schedule.batas_daftar)}
+                            </p>
                             <button
                               className="bg-red-500 text-white px-2 py-1 rounded"
                               onClick={() => handleDeleteSchedule(schedule._id)}
@@ -159,6 +163,10 @@ export default function DataKegiatan() {
                     <div className="flex flex-col gap-2">
                       <p className="font-semibold">Lokasi:</p>
                       <p>{event.location}</p>
+                    </div>
+                    <div className="flex flex-col gap-2">
+                      <p className="font-semibold">Kuota:</p>
+                      <p>{event.kuota}</p>
                     </div>
                     <div className="flex items-start justify-between">
                       <div className="flex flex-col gap-2">

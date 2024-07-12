@@ -61,7 +61,7 @@ export default function SignUp() {
         {error && <p className="text-red-500 text-center">{error}</p>}
         {passwordMatchError && (
           <p className="bg-red-400 text-center text-white px-5 py-2 rounded-lg">
-            Passwords do not match. Please try again.
+            Passwords tidak cocok. Silakan coba lagi.
           </p>
         )}
         <FormSignUp

@@ -8,7 +8,7 @@ import {
 
 const initialState = {
   registrations: [],
-  register: {},
+  register: null,
 };
 
 const registrationReducer = createReducer(initialState, (builder) => {

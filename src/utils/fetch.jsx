@@ -28,7 +28,7 @@ async function login({ email, password }) {
   if (!response.ok) {
     const errorData = await response.json();
     console.error('Error response:', errorData);
-    throw new Error(errorData.message || 'Login failed');
+    throw new Error(errorData.msg || 'Login failed');
   }
 
   return { error: false, data: responseJson.data };
@@ -60,7 +60,7 @@ async function signup({
   const responseJson = await response.json();
 
   if (!response.ok) {
-    alert(responseJson.message);
+    alert(responseJson.msg);
     return { error: true, data: null };
   }
 
@@ -110,7 +110,7 @@ async function updateUsers(id, userData) {
   const responseJson = await response.json();
 
   if (!response.ok) {
-    alert(responseJson.message);
+    alert(responseJson.msg);
     return { error: true, data: null };
   }
 
@@ -127,7 +127,7 @@ async function deleteUser(id) {
 
   if (!response.ok) {
     const responseJson = await response.json();
-    alert(responseJson.message);
+    alert(responseJson.msg);
     return { error: true };
   }
 
@@ -150,7 +150,7 @@ async function createTalents({ name, email, no_telp }) {
   const responseJson = await response.json();
 
   if (!response.ok) {
-    alert(responseJson.message);
+    alert(responseJson.msg);
     return { error: true, data: null };
   }
 
@@ -180,7 +180,7 @@ async function updateTalents(id, talentData) {
   const responseJson = await response.json();
 
   if (!response.ok) {
-    alert(responseJson.message);
+    alert(responseJson.msg);
     return { error: true, data: null };
   }
 
@@ -197,11 +197,34 @@ async function deleteTalent(id) {
 
   if (!response.ok) {
     const responseJson = await response.json();
-    alert(responseJson.message);
+    alert(responseJson.msg);
     return { error: true };
   }
 
   return { error: false };
+}
+
+async function createSchedules({ schedules, batas_daftar, talentID, eventID }) {
+  const response = await fetchWithToken(`${BASE_URL}/create-schedules`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      schedules,
+      batas_daftar,
+      talentID,
+      eventID,
+    }),
+  });
+  const responseJson = await response.json();
+
+  if (!response.ok) {
+    alert(responseJson.msg);
+    return { error: true, data: null };
+  }
+
+  return { error: false, data: responseJson.data };
 }
 
 async function getAllSchedules() {
@@ -226,28 +249,6 @@ async function getOneSchedule(id) {
   return { error: false, data: responseJson.data };
 }
 
-async function createSchedules({ schedules, talentID, eventID }) {
-  const response = await fetchWithToken(`${BASE_URL}/create-schedules`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      schedules,
-      talentID,
-      eventID,
-    }),
-  });
-  const responseJson = await response.json();
-
-  if (!response.ok) {
-    alert(responseJson.message);
-    return { error: true, data: null };
-  }
-
-  return { error: false, data: responseJson.data };
-}
-
 async function deleteSchedules(id) {
   const response = await fetchWithToken(`${BASE_URL}/schedules/${id}`, {
     method: 'DELETE',
@@ -258,7 +259,7 @@ async function deleteSchedules(id) {
 
   if (!response.ok) {
     const responseJson = await response.json();
-    alert(responseJson.message);
+    alert(responseJson.msg);
     return { error: true };
   }
 
@@ -274,7 +275,7 @@ async function uploadDocuments(document) {
   const responseJson = await response.json();
 
   if (!response.ok) {
-    alert(responseJson.message);
+    alert(responseJson.msg);
     return { error: true, data: null };
   }
 
@@ -315,7 +316,7 @@ async function updateDocuments(id, dataDocument) {
   const responseJson = await response.json();
 
   if (!response.ok) {
-    alert(responseJson.message);
+    alert(responseJson.msg);
     return { error: true, data: null };
   }
 
@@ -332,7 +333,7 @@ async function deleteDocument(id) {
 
   if (!response.ok) {
     const responseJson = await response.json();
-    alert(responseJson.message);
+    alert(responseJson.msg);
     return { error: true };
   }
 
@@ -355,7 +356,7 @@ async function registration({ userID, documentID, eventID }) {
   const responseJson = await response.json();
 
   if (!response.ok) {
-    alert(responseJson.message);
+    alert(responseJson.msg);
     return { error: true, data: null };
   }
 
@@ -394,7 +395,7 @@ async function deleteRegistration(id) {
 
   if (!response.ok) {
     const responseJson = await response.json();
-    alert(responseJson.message);
+    alert(responseJson.msg);
     return { error: true };
   }
 
@@ -409,6 +410,7 @@ async function createEvents({
   price,
   linkMeeting,
   imageID,
+  kuota,
 }) {
   const response = await fetchWithToken(`${BASE_URL}/create-events`, {
     method: 'POST',
@@ -423,13 +425,14 @@ async function createEvents({
       price,
       linkMeeting,
       imageID,
+      kuota,
     }),
   });
 
   const responseJson = await response.json();
 
   if (!response.ok) {
-    alert(responseJson.message);
+    alert(responseJson.msg);
     return { error: true, data: null };
   }
 
@@ -459,7 +462,7 @@ async function updateEvents(id, eventData) {
   const responseJson = await response.json();
 
   if (!response.ok) {
-    alert(responseJson.message);
+    alert(responseJson.msg);
     return { error: true, data: null };
   }
 
@@ -476,7 +479,7 @@ async function deleteEvent(id) {
 
   if (!response.ok) {
     const responseJson = await response.json();
-    alert(responseJson.message);
+    alert(responseJson.msg);
     return { error: true };
   }
 
@@ -492,7 +495,7 @@ async function uploadImages(images) {
   const responseJson = await response.json();
 
   if (!response.ok) {
-    alert(responseJson.message);
+    alert(responseJson.msg);
     return { error: true, data: null };
   }
 
@@ -521,6 +524,49 @@ async function getOneImages(id) {
   return { error: false, data: responseJson.data };
 }
 
+async function createPayments(registrationID) {
+  const response = await fetchWithToken(`${BASE_URL}/create-payments`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      registrationID,
+    }),
+  });
+
+  const responseJson = await response.json();
+
+  if (!response.ok) {
+    alert(responseJson.msg);
+    return { error: true, data: null };
+  }
+
+  return { error: false, data: responseJson.data };
+}
+
+async function getAllPayments() {
+  const response = await fetchWithToken(`${BASE_URL}/payments`);
+  const responseJson = await response.json();
+
+  if (!response.ok) {
+    return { error: true, data: null };
+  }
+
+  return { error: false, data: responseJson.data };
+}
+
+async function getOnePayments(id) {
+  const response = await fetchWithToken(`${BASE_URL}/payments/${id}`);
+  const responseJson = await response.json();
+
+  if (!response.ok) {
+    return { error: true, data: null };
+  }
+
+  return { error: false, data: responseJson.data };
+}
+
 export {
   login,
   signup,
@@ -532,9 +578,9 @@ export {
   getAllTalents,
   updateTalents,
   deleteTalent,
+  createSchedules,
   getAllSchedules,
   getOneSchedule,
-  createSchedules,
   deleteSchedules,
   uploadDocuments,
   getAllDocuments,
@@ -552,4 +598,7 @@ export {
   uploadImages,
   getAllImages,
   getOneImages,
+  createPayments,
+  getAllPayments,
+  getOnePayments,
 };

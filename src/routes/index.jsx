@@ -13,7 +13,9 @@ import Registration from '../pages/registration';
 import EventsLists from '../pages/eventsLists';
 import EventDetail from '../pages/eventDetail';
 import ValidationProcess from '../pages/registration/validationProcess';
-import Payments from '../pages/payments';
+import PaymentPage from '../pages/payments';
+import ConfirmationPage from '../pages/confirmation';
+import PaymentSuccess from '../pages/successPage';
 
 // ADMIN
 import RequireAdmin from './requireAdmin';
@@ -22,6 +24,7 @@ import DataUser from '../admin/pages/users';
 import DataNarasumber from '../admin/pages/talents';
 import DataKegiatan from '../admin/pages/events';
 import DataPendaftaran from '../admin/pages/registration';
+import DataPembayaran from '../admin/pages/payments';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -37,6 +40,7 @@ const router = createBrowserRouter(
         <Route path="/data-narasumber/*" element={<DataNarasumber />} />
         <Route path="/data-kegiatan/*" element={<DataKegiatan />} />
         <Route path="/data-pendaftaran/*" element={<DataPendaftaran />} />
+        <Route path="/data-pembayaran/*" element={<DataPembayaran />} />
       </Route>
       <Route element={<RequireAuth />}>
         <Route path="/dashboard-peserta" element={<DashboardClient />} />
@@ -44,8 +48,13 @@ const router = createBrowserRouter(
           path="/pendaftaran-kegiatan-pelatihan"
           element={<Registration />}
         />
-        <Route path="/proses-validasi" element={<ValidationProcess />} />
-        <Route path="/proses-pembayaran" element={<Payments />} />
+        <Route path="/proses-validasi/:id" element={<ValidationProcess />} />
+        <Route path="/proses-pembayaran/:id" element={<PaymentPage />} />
+        <Route
+          path="/konfirmasi-pembayaran/:id"
+          element={<ConfirmationPage />}
+        />
+        <Route path="/pembayaran-berhasil" element={<PaymentSuccess />} />
       </Route>
     </>
   )

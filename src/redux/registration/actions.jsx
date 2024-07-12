@@ -30,6 +30,7 @@ export const fetchOneRegistration = (registrationID) => async (dispatch) => {
     const res = await getOneRegistration(registrationID);
     const dataRegister = res.data;
     dispatch(setOneRegistration(dataRegister));
+    return dataRegister;
   } catch (error) {
     alert('Gagal Menampilkan Data Pendaftaran');
     console.error('Get One Registrations Error:', error);
@@ -41,6 +42,7 @@ export const fetchCreateRegistration = (registerData) => async (dispatch) => {
     const res = await registration(registerData);
     const dataCreateRegistration = res.data;
     dispatch(createRegistration(dataCreateRegistration));
+    return dataCreateRegistration;
   } catch (error) {
     console.error('Create Registration Error:', error);
   }

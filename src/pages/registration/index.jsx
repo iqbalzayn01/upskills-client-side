@@ -54,10 +54,18 @@ export default function Registration() {
           return;
         }
 
-        await dispatch(fetchCreateRegistration(registerData));
+        // await dispatch(fetchCreateRegistration(registerData));
+        const registerResponse = await dispatch(
+          fetchCreateRegistration(registerData)
+        );
+        const registrationID = registerResponse._id;
+        console.log('registerID', registrationID);
         setFile(null);
 
-        navigate('/proses-validasi');
+        // navigate('/proses-validasi');
+        navigate(`/proses-validasi/${registrationID}`, {
+          state: { registrationID },
+        });
       }
     } catch (error) {
       alert('Dokumen gagal diunggah');

@@ -1,45 +1,58 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation, useParams } from 'react-router-dom';
 
-import { fetchAllRegistration } from '../../redux/registration/actions';
+import { fetchOneRegistration } from '../../redux/registration/actions';
 import { userLogged } from '../../redux/auth/actions';
 
 export default function CValidation() {
-  const { token, user } = useSelector((state) => state.auth);
-  const { registrations } = useSelector((state) => state.registration);
+  const { id } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const { token, user } = useSelector((state) => state.auth);
+  const { register } = useSelector((state) => state.registration);
+
+  const registrationID = location.state?.registrationID || id;
 
   useEffect(() => {
     if (token) {
       dispatch(userLogged());
-      dispatch(fetchAllRegistration());
+      if (registrationID) {
+        dispatch(fetchOneRegistration(registrationID));
+      }
     }
-  }, [dispatch, token]);
+  }, [registrationID, dispatch, token]);
 
   useEffect(() => {
-    if (registrations && user) {
-      const userRegistration = registrations.find(
-        (register) => register.userID._id === user._id
-      );
+    if (register && user) {
+      if (register.userID && register.userID._id === user._id) {
+        const { data_valid } = register.documentID;
 
-      if (userRegistration) {
-        const { data_valid } = userRegistration.documentID;
-
-        if (data_valid === 'Data Valid') {
-          navigate('/proses-pembayaran');
-        } else if (data_valid === 'Data Tidak Valid') {
-          navigate('/kegiatan-pelatihan');
+        if (data_valid === 'Belum Diperiksa') {
+          console.log('VALIDASI:', data_valid);
+          if (registrationID === register._id) {
+            navigate(`/proses-validasi/${registrationID}`);
+          }
+        } else if (data_valid === 'Data Valid') {
+          console.log('VALIDASI:', data_valid);
+          navigate(`/proses-pembayaran/${register._id}`, {
+            state: { registrationID: register._id },
+          });
         } else {
-          navigate('/proses-validasi');
+          console.log('VALIDASI:', data_valid);
         }
       }
     }
-  }, [registrations, user, navigate]);
+  }, [registrationID, register, user, navigate]);
 
   const handleReloadPage = () => {
     window.location.reload();
+  };
+
+  const handleToDashboard = () => {
+    navigate('/dashboard-peserta');
   };
 
   return (
@@ -69,6 +82,12 @@ export default function CValidation() {
           onClick={handleReloadPage}
         >
           Muat Ulang Halaman
+        </button>
+        <button
+          className="bg-blue-500 text-white px-2 py-1 rounded mr-2"
+          onClick={handleToDashboard}
+        >
+          Check pada Dashboard
         </button>
       </div>
     </div>
