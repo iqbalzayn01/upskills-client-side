@@ -27,6 +27,10 @@ export default function DashboardClient() {
     }
   }, [token, dispatch]);
 
+  const handleButtonAction = () => {
+    console.log('TEST');
+  };
+
   if (!token) return <Navigate to="/signin" replace />;
 
   return (
@@ -73,7 +77,9 @@ export default function DashboardClient() {
                 </>
               )}
             </div>
-            <h1 className="font-semibold text-3xl">Daftar Kegiatan</h1>
+            <h1 className="font-semibold text-3xl">
+              Kegiatan Pelatihan Yang Diikuti
+            </h1>
             {/* My Events */}
             <div className="flex gap-5 p-6 mb-5 shadow-md border border-slate-300 rounded-xl">
               {registrations && registrations.length > 0 ? (
@@ -84,7 +90,7 @@ export default function DashboardClient() {
                       key={index}
                       className="grid grid-cols-3 gap-5 p-6 bg-secondarycolor rounded-xl"
                     >
-                      {schedules && schedules.length > 0 ? (
+                      {schedules &&
                         schedules
                           .filter(
                             (schedule) =>
@@ -109,11 +115,6 @@ export default function DashboardClient() {
                                 <p className="text-2xl text-white mt-2">
                                   {schedule.eventID.description}
                                 </p>
-                                {/* <div className="flex flex-col gap-2">
-                                  <p className="bg-emerald-500 text-white text-center font-medium uppercase px-3 py-2 rounded-lg">
-                                    {schedule.eventID.event_status}
-                                  </p>
-                                </div> */}
                                 <p className="text-white mt-3">
                                   <span className="text-gray-500">Kuota:</span>{' '}
                                   {schedule.eventID.kuota}
@@ -148,12 +149,7 @@ export default function DashboardClient() {
                                 </p>
                               </div>
                               <CButton
-                                onClick={() =>
-                                  register(
-                                    schedule?.eventID?._id,
-                                    schedule?._id
-                                  )
-                                }
+                                onClick={handleButtonAction}
                                 className="flex items-center justify-center gap-3 bg-primarycolor font-semibold text-secondarycolor text-xl px-3 py-2 rounded-lg"
                               >
                                 <span>Daftar</span>
@@ -173,12 +169,7 @@ export default function DashboardClient() {
                                 </svg>
                               </CButton>
                             </div>
-                          ))
-                      ) : (
-                        <p className="text-center text-gray-500">
-                          Belum ada kegiatan pelatihan yang diikuti
-                        </p>
-                      )}
+                          ))}
                     </div>
                   ))
               ) : (

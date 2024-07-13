@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import config from '../../config';
 
 import { fetchAllSchedules } from '../../redux/schedules/actions';
+import { fetchAllRegistration } from '../../redux/registration/actions';
 import { userLogged } from '../../redux/auth/actions';
 import formatDateTime from '../../utils/formatDateTime';
 import formatPrice from '../../utils/formatPrice';
@@ -13,6 +14,7 @@ import CButton from '../CButton';
 export default function CEventsList() {
   const { schedules } = useSelector((state) => state.schedules);
   const { user } = useSelector((state) => state.auth);
+  const { registrations } = useSelector((state) => state.registration);
   const getToken = useSelector((state) => state.auth.token);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -22,6 +24,7 @@ export default function CEventsList() {
     dispatch(fetchAllSchedules());
     if (getToken) {
       dispatch(userLogged());
+      dispatch(fetchAllRegistration());
     }
   }, [dispatch, getToken]);
 
@@ -35,16 +38,22 @@ export default function CEventsList() {
     }
   };
 
+  // Filter schedules to exclude already registered events
+  const filteredSchedules = schedules.filter(
+    (schedule) =>
+      !registrations.some((regis) => regis.eventID._id === schedule.eventID._id)
+  );
+
   return (
     <div className="container-base p-5 mb-20">
       <div className="flex flex-col gap-5">
         <h2 className="font-semibold text-2xl text-center mb-5">
           Daftar Kegiatan Pelatihan
         </h2>
-        {schedules && schedules.length > 0 ? (
-          schedules.map((schedule, index) => (
+        {filteredSchedules.length > 0 ? (
+          filteredSchedules.map((schedule) => (
             <div
-              key={index}
+              key={schedule._id}
               className="grid grid-cols-3 gap-5 p-6 bg-secondarycolor rounded-xl"
             >
               <div className="col-span-1">
