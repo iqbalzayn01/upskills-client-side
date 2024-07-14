@@ -13,6 +13,7 @@ export default function DataUser() {
   const [isPopUpOpen, setIsPopUpOpen] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [userIdToDelete, setUserIdToDelete] = useState(null);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -31,12 +32,13 @@ export default function DataUser() {
     setIsModalOpen(true);
   };
 
-  const handlePopUpDelete = () => {
+  const handlePopUpDelete = (id) => {
+    setUserIdToDelete(id);
     setIsPopUpOpen(true);
   };
 
-  const handleDelete = (id) => {
-    dispatch(fetchDeleteUser(id));
+  const handleDelete = () => {
+    dispatch(fetchDeleteUser(userIdToDelete));
     setIsPopUpOpen(false);
   };
 
@@ -70,7 +72,7 @@ export default function DataUser() {
             <tbody>
               {users &&
                 users
-                  .filter((user) => user.role === 'peserta')
+                  .filter((user) => user?.role === 'peserta')
                   .map((user, index) => (
                     <tr key={user._id} className="border-t">
                       <td className="px-4 py-2">{index + 1}</td>
@@ -87,13 +89,13 @@ export default function DataUser() {
                         </button>
                         <button
                           className="bg-red-500 text-white px-2 py-1 rounded"
-                          onClick={handlePopUpDelete}
+                          onClick={() => handlePopUpDelete(user?._id)}
                         >
                           Hapus
                         </button>
                         {isPopUpOpen && (
                           <PopUp
-                            handle={() => handleDelete(user._id)}
+                            handle={handleDelete}
                             onClose={() => setIsPopUpOpen(false)}
                             textPopUp="Apakah anda yakin ingin menghapus data ini?"
                             classNameBtn="bg-red-500"

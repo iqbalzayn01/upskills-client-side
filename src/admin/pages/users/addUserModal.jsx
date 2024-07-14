@@ -12,7 +12,6 @@ export default function AddUserModal({ onClose, isEdit, user }) {
     password: '',
     confirmPassword: '',
     no_telp: '',
-    role: 'user',
   });
   const dispatch = useDispatch();
 
@@ -114,20 +113,6 @@ export default function AddUserModal({ onClose, isEdit, user }) {
               required
             />
           </div>
-          {!isEdit && (
-            <div className="mb-4">
-              <label className="block mb-1">Role</label>
-              <select
-                name="role"
-                value={formData.role}
-                onChange={handleChange}
-                className="w-full p-2 border rounded"
-              >
-                <option value="user">User</option>
-                <option value="admin">Admin</option>
-              </select>
-            </div>
-          )}
           <div className="flex justify-end">
             <button
               type="button"

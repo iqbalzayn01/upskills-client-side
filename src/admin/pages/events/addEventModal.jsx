@@ -108,27 +108,29 @@ export default function AddEventModal({ onClose, isEdit, eventData }) {
               required
             ></textarea>
           </div>
-          <div className="mb-4">
-            <label className="block mb-1">Link Meeting</label>
-            <input
-              type="text"
-              name="linkMeeting"
-              value={formData.linkMeeting}
-              onChange={handleChange}
-              className="w-full p-2 border rounded"
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block mb-1">Lokasi Event</label>
-            <input
-              type="text"
-              name="location"
-              value={formData.location}
-              onChange={handleChange}
-              className="w-full p-2 border rounded"
-              required
-            />
+          <div className="mb-4 flex space-x-4">
+            <div className="w-1/2">
+              <label className="block mb-1">Link Meeting</label>
+              <input
+                type="text"
+                name="linkMeeting"
+                value={formData.linkMeeting}
+                onChange={handleChange}
+                className="w-full p-2 border rounded"
+                required
+              />
+            </div>
+            <div className="w-1/2">
+              <label className="block mb-1">Lokasi Event</label>
+              <input
+                type="text"
+                name="location"
+                value={formData.location}
+                onChange={handleChange}
+                className="w-full p-2 border rounded"
+                required
+              />
+            </div>
           </div>
           <div className="mb-4">
             <label className="block mb-1">Status Kegiatan</label>
@@ -145,38 +147,40 @@ export default function AddEventModal({ onClose, isEdit, eventData }) {
               <option value="selesai">Selesai</option>
             </select>
           </div>
-          <div className="mb-4">
-            <label className="block mb-1">Harga</label>
-            <input
-              type="number"
-              name="price"
-              value={formData.price}
-              onChange={handleChange}
-              className="w-full p-2 border rounded"
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block mb-1">Kuota</label>
-            <input
-              type="number"
-              name="kuota"
-              value={formData.kuota}
-              onChange={handleChange}
-              className="w-full p-2 border rounded"
-              required
-            />
+          <div className="mb-4 flex space-x-4">
+            <div className="w-1/2">
+              <label className="block mb-1">Harga</label>
+              <input
+                type="number"
+                name="price"
+                value={formData.price}
+                onChange={handleChange}
+                className="w-full p-2 border rounded"
+                required
+              />
+            </div>
+            <div className="w-1/2">
+              <label className="block mb-1">Kuota</label>
+              <input
+                type="number"
+                name="kuota"
+                value={formData.kuota}
+                onChange={handleChange}
+                className="w-full p-2 border rounded"
+                required
+              />
+            </div>
           </div>
           {!isEdit && (
             <div className="mb-4">
-              <label htmlFor="fileName" className="text-sm text-gray-500">
+              <label htmlFor="fileName" className="block mb-1">
                 Unggah Gambar
               </label>
               <input
                 id="fileName"
                 name="fileName"
                 type="file"
-                className="block w-full px-3 py-2 mt-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                className="block w-full px-3 py-2 mt-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 accept=".jpg,.jpeg,.png"
                 onChange={handleFileChange}
                 required

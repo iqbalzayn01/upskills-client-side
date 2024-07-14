@@ -12,6 +12,8 @@ export default function SignUp() {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [passwordMatchError, setPasswordMatchError] = useState(false);
+  const [emailFormatError, setEmailFormatError] = useState(false);
+  const [allFieldsError, setAllFieldsError] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -24,6 +26,7 @@ export default function SignUp() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+    setAllFieldsError(false);
   };
 
   const handleSubmit = async (e) => {
@@ -31,15 +34,34 @@ export default function SignUp() {
     // dispatch(showLoading());
     setIsLoading(true);
 
+    if (
+      !formData.name ||
+      !formData.email ||
+      !formData.no_telp ||
+      !formData.password ||
+      !formData.confirmPassword
+    ) {
+      setAllFieldsError(true);
+      setIsLoading(false);
+      return;
+    }
+
     if (formData.password !== formData.confirmPassword) {
       setPasswordMatchError(true);
+      return;
+    }
+
+    // Email format validation using regex
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      setEmailFormatError(true);
+      setIsLoading(false);
       return;
     }
 
     try {
       await dispatch(signUp(formData));
       setIsLoading(false);
-      console.log('TEST');
       // dispatch(hideLoading());
       navigate('/signin');
     } catch (error) {
@@ -59,9 +81,19 @@ export default function SignUp() {
           Sign Up
         </h3>
         {error && <p className="text-red-500 text-center">{error}</p>}
+        {allFieldsError && (
+          <p className="bg-red-400 text-center text-white px-5 py-2 rounded-lg">
+            Semua field harus diisi. Silakan lengkapi formulir.
+          </p>
+        )}
         {passwordMatchError && (
           <p className="bg-red-400 text-center text-white px-5 py-2 rounded-lg">
             Passwords tidak cocok. Silakan coba lagi.
+          </p>
+        )}
+        {emailFormatError && (
+          <p className="bg-red-400 text-center text-white px-5 py-2 rounded-lg">
+            Format email tidak valid. Silakan coba lagi.
           </p>
         )}
         <FormSignUp

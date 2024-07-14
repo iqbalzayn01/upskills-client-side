@@ -25,8 +25,12 @@ export default function Sidebar() {
     <div className="w-64 h-screen bg-gray-800 text-white fixed">
       <ul className="py-4">
         <li className="px-4 mb-10">
-          <Link to="/dashboard" className="text-3xl font-medium">
-            Insightful Events <i>Admin</i>
+          <Link
+            to="/dashboard-admin"
+            className="flex items-center justify-between bg-white p-4 text-3xl text-secondarycolor font-bold rounded-lg uppercase"
+          >
+            <img src="/design/logo.svg" alt="" />
+            <i>Admin</i>
           </Link>
         </li>
         <li className="w-full hover:bg-slate-500 px-4 py-4 mb-4">

@@ -54,34 +54,36 @@ export default function AddScheduleModal({ onClose, isEdit, eventID }) {
         <form onSubmit={handleSubmit}>
           {formData.schedules.map((schedule, index) => (
             <div key={index} className="mb-4">
-              <div className="mb-2">
-                <label className="block mb-1">Waktu Mulai</label>
-                <input
-                  type="datetime-local"
-                  name="start_time"
-                  value={schedule.start_time || ''}
-                  onChange={(e) => handleChange(index, e)}
-                  className="w-full p-2 border rounded"
-                  required
-                />
+              <div className="flex space-x-4 mb-2">
+                <div className="w-1/2">
+                  <label className="block mb-1">Waktu Mulai</label>
+                  <input
+                    type="datetime-local"
+                    name="start_time"
+                    value={schedule.start_time || ''}
+                    onChange={(e) => handleChange(index, e)}
+                    className="w-full p-2 border rounded"
+                    required
+                  />
+                </div>
+                <div className="w-1/2">
+                  <label className="block mb-1">Waktu Selesai</label>
+                  <input
+                    type="datetime-local"
+                    name="end_time"
+                    value={schedule.end_time || ''}
+                    onChange={(e) => handleChange(index, e)}
+                    className="w-full p-2 border rounded"
+                    required
+                  />
+                </div>
               </div>
               <div className="mb-2">
-                <label className="block mb-1">Waktu Selesai</label>
-                <input
-                  type="datetime-local"
-                  name="end_time"
-                  value={schedule.end_time || ''}
-                  onChange={(e) => handleChange(index, e)}
-                  className="w-full p-2 border rounded"
-                  required
-                />
-              </div>
-              <div className="mb-4">
                 <label className="block mb-1">Batas Pendaftaran</label>
                 <input
                   type="datetime-local"
                   name="batas_daftar"
-                  value={schedule.batas_daftar}
+                  value={formData.batas_daftar}
                   onChange={handleBatasDaftar}
                   className="w-full p-2 border rounded"
                   required

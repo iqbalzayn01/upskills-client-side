@@ -87,7 +87,7 @@ export default function CValidation() {
           className="bg-blue-500 text-white px-2 py-1 rounded mr-2"
           onClick={handleToDashboard}
         >
-          Check pada Dashboard
+          &lt; Dashboard
         </button>
       </div>
     </div>

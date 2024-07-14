@@ -25,7 +25,7 @@ export default function CInputLabel({
         placeholder={placeholder}
         onChange={onChange}
         accept={accept}
-        required
+        // required
       />
     </div>
   );

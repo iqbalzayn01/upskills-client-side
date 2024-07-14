@@ -12,6 +12,7 @@ export default function SignIn() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
+  const [inputError, setInputError] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -21,12 +22,19 @@ export default function SignIn() {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
     setError('');
+    setInputError(false);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     // dispatch(showLoading());
     setIsLoading(true);
+
+    if (!formData.email || !formData.password) {
+      setInputError(true);
+      setIsLoading(false);
+      return;
+    }
     try {
       await dispatch(signIn(formData));
       setIsLoading(false);
@@ -56,6 +64,11 @@ export default function SignIn() {
           Sign In
         </h3>
         {error && <p className="text-red-500 text-center">{error}</p>}
+        {inputError && (
+          <p className="bg-red-400 text-center text-white px-5 py-2 rounded-lg">
+            Email dan Password harus diisi. Silakan coba lagi.
+          </p>
+        )}
         <FormSignIn
           valueEmail={formData.email}
           valuePassword={formData.password}

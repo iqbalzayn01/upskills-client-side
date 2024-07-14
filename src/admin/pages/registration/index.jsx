@@ -18,6 +18,11 @@ export default function DataPendaftaran() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [selectedDocument, setSelectedDocument] = useState(null);
+  const [selectRegisterID, setSelectRegisterID] = useState({
+    registerID: null,
+    documentID: null,
+  });
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -30,13 +35,14 @@ export default function DataPendaftaran() {
     setIsModalOpen(true);
   };
 
-  const handlePopUpDelete = () => {
+  const handlePopUpDelete = (registerID, documentID) => {
+    setSelectRegisterID({ registerID, documentID });
     setIsPopUpOpen(true);
   };
 
-  const handleDelete = (registerID, documentID) => {
-    dispatch(fetchDeleteRegister(registerID));
-    dispatch(fetchDeleteDocument(documentID));
+  const handleDelete = () => {
+    dispatch(fetchDeleteRegister(selectRegisterID.registerID));
+    dispatch(fetchDeleteDocument(selectRegisterID.documentID));
     setIsPopUpOpen(false);
   };
 
@@ -66,7 +72,7 @@ export default function DataPendaftaran() {
             <tbody>
               {registrations && registrations.length > 0 ? (
                 registrations
-                  .filter((register) => register.userID.role === 'peserta')
+                  .filter((register) => register?.userID?.role === 'peserta')
                   .map((register, index) => (
                     <tr key={register._id} className="border-t">
                       <td className="px-4 py-2">{index + 1}</td>
@@ -96,18 +102,18 @@ export default function DataPendaftaran() {
                         </button>
                         <button
                           className="bg-red-500 text-white px-2 py-1 rounded"
-                          onClick={() => handlePopUpDelete(register)}
+                          onClick={() =>
+                            handlePopUpDelete(
+                              register._id,
+                              register.documentID._id
+                            )
+                          }
                         >
                           Hapus
                         </button>
                         {isPopUpOpen && (
                           <PopUp
-                            handle={() =>
-                              handleDelete(
-                                register._id,
-                                register.documentID._id
-                              )
-                            }
+                            handle={handleDelete}
                             onClose={() => setIsPopUpOpen(false)}
                             textPopUp="Apakah anda yakin ingin menghapus data ini?"
                             classNameBtn="bg-red-500"

@@ -55,18 +55,19 @@ export default function DataKegiatan() {
     setIsModalOpen(true);
   };
 
-  const handlePopUpDelete = () => {
+  const handlePopUpDelete = (id) => {
+    setSelectEventID(id);
     setIsPopUpOpen(true);
   };
 
-  const handleDeleteEvent = (id) => {
-    dispatch(fetchDeleteEvent(id));
+  const handleDeleteEvent = () => {
+    dispatch(fetchDeleteEvent(selectEventID));
     setIsPopUpOpen(false);
   };
 
   // Schedules
-  const handleCreateSchedule = (eventID) => {
-    setSelectEventID(eventID);
+  const handleCreateSchedule = (id) => {
+    setSelectEventID(id);
     setScheduleOpen(true);
   };
 
@@ -94,7 +95,7 @@ export default function DataKegiatan() {
           {events && events.length > 0 ? (
             events.map((event) => {
               const eventSchedules = schedules.filter(
-                (schedule) => schedule.eventID._id === event._id
+                (schedule) => schedule?.eventID?._id === event?._id
               );
 
               return (
@@ -192,13 +193,13 @@ export default function DataKegiatan() {
                       </button>
                       <button
                         className="bg-red-500 text-white px-2 py-1 rounded"
-                        onClick={handlePopUpDelete}
+                        onClick={() => handlePopUpDelete(event._id)}
                       >
                         Hapus
                       </button>
                       {isPopUpOpen && (
                         <PopUp
-                          handle={() => handleDeleteEvent(event._id)}
+                          handle={handleDeleteEvent}
                           onClose={() => setIsPopUpOpen(false)}
                           textPopUp="Apakah anda yakin ingin menghapus data ini?"
                           classNameBtn="bg-red-500"

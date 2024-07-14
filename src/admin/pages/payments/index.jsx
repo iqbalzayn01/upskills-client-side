@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 
 import { userLogged } from '../../../redux/auth/actions';
 import { fetchAllPay } from '../../../redux/payments/actions';
+import formatDateTime from '../../../utils/formatDateTime';
 import Sidebar from '../../components/Sidebar';
 
 export default function DataPembayaran() {
@@ -13,8 +14,6 @@ export default function DataPembayaran() {
     dispatch(userLogged());
     dispatch(fetchAllPay());
   }, [dispatch]);
-
-  console.log('TESTING', payments);
 
   return (
     <div className="w-full">
@@ -29,35 +28,32 @@ export default function DataPembayaran() {
             <thead>
               <tr>
                 <th className="text-left px-4 py-2">No</th>
-                <th className="text-left px-4 py-2">Name</th>
+                <th className="text-left px-4 py-2">ID Pembayaran</th>
+                <th className="text-left px-4 py-2">Nama Peserta</th>
                 <th className="text-left px-4 py-2">Email</th>
-                <th className="text-left px-4 py-2">Nomor Telepon</th>
-                <th className="text-left px-4 py-2">Role</th>
-                <th className="text-left px-4 py-2">Dokumen</th>
-                <th className="text-left px-4 py-2">Status</th>
+                <th className="text-left px-4 py-2">Pelatihan</th>
+                <th className="text-left px-4 py-2">Total Pembayaran</th>
+                <th className="text-left px-4 py-2">Tgl Pembayaran</th>
               </tr>
             </thead>
-            {/* <tbody>
-              {payments && payments.length > 0 ? (
+            <tbody>
+              {payments && payments?.length > 0 ? (
                 payments.map((pay, index) => (
-                  <tr key={pay._id} className="border-t">
+                  <tr key={pay?._id} className="border-t">
                     <td className="px-4 py-2">{index + 1}</td>
-                    <td className="px-4 py-2">{register.userID.name}</td>
-                    <td className="px-4 py-2">{register.userID.email}</td>
-                    <td className="px-4 py-2">{register.userID.no_telp}</td>
-                    <td className="px-4 py-2">{register.userID.role}</td>
+                    <td className="px-4 py-2">{pay?.id_payment}</td>
                     <td className="px-4 py-2">
-                      <Link
-                        to={`http://localhost:9000/${register.documentID.fileName}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-500 underline"
-                      >
-                        Lihat Dokumen
-                      </Link>
+                      {pay?.registrationID?.userID?.name}
                     </td>
                     <td className="px-4 py-2">
-                      {register.documentID.data_valid}
+                      {pay?.registrationID?.userID?.email}
+                    </td>
+                    <td className="px-4 py-2">
+                      {pay?.registrationID?.eventID?.name}
+                    </td>
+                    <td className="px-4 py-2">{pay?.total_payment}</td>
+                    <td className="px-4 py-2">
+                      {formatDateTime(pay?.createdAt)}
                     </td>
                   </tr>
                 ))
@@ -71,7 +67,7 @@ export default function DataPembayaran() {
                   </td>
                 </tr>
               )}
-            </tbody> */}
+            </tbody>
           </table>
         </div>
       </main>

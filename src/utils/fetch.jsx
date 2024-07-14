@@ -26,6 +26,7 @@ async function login({ email, password }) {
   const responseJson = await response.json();
 
   if (!response.ok) {
+    alert('Email atau Password salah');
     const errorData = await response.json();
     console.error('Error response:', errorData);
     throw new Error(errorData.msg || 'Login failed');
