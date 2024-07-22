@@ -12,6 +12,8 @@ export default function SignUp() {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [passwordMatchError, setPasswordMatchError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
+  const [passwordLengthError, setPasswordLengthError] = useState(false); // State untuk error panjang password
   const [emailFormatError, setEmailFormatError] = useState(false);
   const [allFieldsError, setAllFieldsError] = useState(false);
   const [formData, setFormData] = useState({
@@ -27,6 +29,8 @@ export default function SignUp() {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
     setAllFieldsError(false);
+    setPasswordError(false);
+    setPasswordLengthError(false);
   };
 
   const handleSubmit = async (e) => {
@@ -34,20 +38,27 @@ export default function SignUp() {
     // dispatch(showLoading());
     setIsLoading(true);
 
-    if (
-      !formData.name ||
-      !formData.email ||
-      !formData.no_telp ||
-      !formData.password ||
-      !formData.confirmPassword
-    ) {
+    if (!formData.name || !formData.email || !formData.no_telp) {
       setAllFieldsError(true);
+      setIsLoading(false);
+      return;
+    }
+
+    if (!formData.password) {
+      setPasswordError(true);
+      setIsLoading(false);
+      return;
+    }
+
+    if (formData.password.length < 6) {
+      setPasswordLengthError(true);
       setIsLoading(false);
       return;
     }
 
     if (formData.password !== formData.confirmPassword) {
       setPasswordMatchError(true);
+      setIsLoading(false);
       return;
     }
 
@@ -62,8 +73,10 @@ export default function SignUp() {
     try {
       await dispatch(signUp(formData));
       setIsLoading(false);
+      navigate('/signin', {
+        state: { successMessage: 'Akun berhasil dibuat' },
+      });
       // dispatch(hideLoading());
-      navigate('/signin');
     } catch (error) {
       console.error('Sign Up Error:', error);
       setError('Sign up error');
@@ -83,7 +96,7 @@ export default function SignUp() {
         {error && <p className="text-red-500 text-center">{error}</p>}
         {allFieldsError && (
           <p className="bg-red-400 text-center text-white px-5 py-2 rounded-lg">
-            Semua field harus diisi. Silakan lengkapi formulir.
+            Semua kolom input harus diisi. Mohon input dengan benar!
           </p>
         )}
         {passwordMatchError && (
@@ -91,9 +104,19 @@ export default function SignUp() {
             Passwords tidak cocok. Silakan coba lagi.
           </p>
         )}
+        {passwordError && (
+          <p className="bg-red-400 text-center text-white px-5 py-2 rounded-lg">
+            Password wajib diisi.
+          </p>
+        )}
+        {passwordLengthError && (
+          <p className="bg-red-400 text-center text-white px-5 py-2 rounded-lg">
+            Password harus minimal 6 karakter.
+          </p>
+        )}
         {emailFormatError && (
           <p className="bg-red-400 text-center text-white px-5 py-2 rounded-lg">
-            Format email tidak valid. Silakan coba lagi.
+            Format email tidak valid.
           </p>
         )}
         <FormSignUp
