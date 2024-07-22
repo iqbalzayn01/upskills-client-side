@@ -61,6 +61,7 @@ export default function DataPendaftaran() {
               <tr>
                 <th className="text-left px-4 py-2">No</th>
                 <th className="text-left px-4 py-2">Name</th>
+                <th className="text-left px-4 py-2">Kode Pelatihan</th>
                 <th className="text-left px-4 py-2">Email</th>
                 <th className="text-left px-4 py-2">Nomor Telepon</th>
                 <th className="text-left px-4 py-2">Role</th>
@@ -77,6 +78,7 @@ export default function DataPendaftaran() {
                     <tr key={register._id} className="border-t">
                       <td className="px-4 py-2">{index + 1}</td>
                       <td className="px-4 py-2">{register.userID.name}</td>
+                      <td className="px-4 py-2">{register.eventID.id_event}</td>
                       <td className="px-4 py-2">{register.userID.email}</td>
                       <td className="px-4 py-2">{register.userID.no_telp}</td>
                       <td className="px-4 py-2">{register.userID.role}</td>
@@ -98,7 +100,7 @@ export default function DataPendaftaran() {
                           className="bg-blue-500 text-white px-2 py-1 rounded mr-2"
                           onClick={() => handleEdit(register.documentID)}
                         >
-                          Edit
+                          Periksa
                         </button>
                         <button
                           className="bg-red-500 text-white px-2 py-1 rounded"

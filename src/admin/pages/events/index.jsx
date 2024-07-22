@@ -113,6 +113,10 @@ export default function DataKegiatan() {
                     )}
                     <h2 className="text-2xl font-medium">{event.name}</h2>
                     <hr className=" border border-gray-300" />
+                    <p className="font-bold">
+                      ID Kegiatan:{' '}
+                      <span className="font-normal">{event.id_event}</span>
+                    </p>
                     <p>{event.description}</p>
                     <div className="flex flex-col">
                       {eventSchedules.length > 0 ? (

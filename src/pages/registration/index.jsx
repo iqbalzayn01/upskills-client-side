@@ -34,39 +34,51 @@ export default function Registration() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!file) {
+      alert('Dokumen harus diunggah.');
+      return;
+    }
+
+    // Periksa format file
+    const fileExtension = file.name.split('.').pop().toLowerCase();
+    if (fileExtension !== 'pdf') {
+      alert('Format dokumen tidak didukung.');
+      return;
+    }
+
+    // Periksa ukuran file
+    const maxSize = 20 * 1024 * 1024; // 20MB
+    if (file.size > maxSize) {
+      alert('Ukuran file melebihi batas maksimal 20MB.');
+      return;
+    }
+
     try {
-      if (!file) {
-        alert('Please upload a document.');
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const response = await dispatch(fetchUploadDocument(formData));
+      const documentID = response._id;
+
+      const registerData = { eventID, documentID, userID };
+
+      if (!eventID || !documentID || !userID) {
+        alert('Semua data harus diisi.');
         return;
       }
 
-      if (file) {
-        const formData = new FormData();
-        formData.append('file', file);
+      const registerResponse = await dispatch(
+        fetchCreateRegistration(registerData)
+      );
+      const registrationID = registerResponse._id;
+      console.log('registerID', registrationID);
+      setFile(null);
 
-        const response = await dispatch(fetchUploadDocument(formData));
-        const documentID = response._id;
-
-        const registerData = { eventID, documentID, userID };
-
-        if (!eventID || !documentID || !userID) {
-          alert('Semua data harus diisi.');
-          return;
-        }
-
-        // await dispatch(fetchCreateRegistration(registerData));
-        const registerResponse = await dispatch(
-          fetchCreateRegistration(registerData)
-        );
-        const registrationID = registerResponse._id;
-        console.log('registerID', registrationID);
-        setFile(null);
-
-        // navigate('/proses-validasi');
-        navigate(`/proses-validasi/${registrationID}`, {
-          state: { registrationID },
-        });
-      }
+      navigate(`/proses-validasi/${registrationID}`, {
+        state: { registrationID },
+      });
+      alert('Dokumen berhasil diunggah');
     } catch (error) {
       alert('Dokumen gagal diunggah');
       console.error('Upload Document Error:', error);
@@ -109,14 +121,15 @@ export default function Registration() {
                         htmlFor="fileName"
                         className="text-sm text-gray-500"
                       >
-                        Unggah Dokumen
+                        Unggah Dokumen{' '}
+                        <span className="text-red-500">{`(Format PDF *)`}</span>
                       </label>
                       <input
                         id="fileName"
                         name="fileName"
                         type="file"
                         className="block w-full px-3 py-2 mt-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                        accept=".pdf,.doc,.docx"
+                        accept=".pdf"
                         onChange={handleFileChange}
                         // required
                       />
