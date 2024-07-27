@@ -25,6 +25,7 @@ import DataNarasumber from '../admin/pages/talents';
 import DataKegiatan from '../admin/pages/events';
 import DataPendaftaran from '../admin/pages/registration';
 import DataPembayaran from '../admin/pages/payments';
+import ProofOfRegis from '../pages/payments/proofOfRegis';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -55,6 +56,7 @@ const router = createBrowserRouter(
           element={<ConfirmationPage />}
         />
         <Route path="/pembayaran-berhasil" element={<PaymentSuccess />} />
+        <Route path="/bukti-pendaftaran/:id" element={<ProofOfRegis />} />
       </Route>
     </>
   )

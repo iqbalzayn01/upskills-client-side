@@ -199,8 +199,17 @@ export default function DashboardClient() {
                               )}
                             </p>
                             {payment ? (
-                              <div className="flex items-center justify-center gap-3 bg-primarycolor font-semibold text-secondarycolor text-xl px-3 py-2 rounded-lg mt-3">
-                                <span>Sudah Terdaftar</span>
+                              <div className="flex flex-col gap-1">
+                                <div className="flex items-center justify-center gap-3 bg-primarycolor font-semibold text-secondarycolor text-xl px-3 py-2 rounded-lg mt-3">
+                                  <span>Sudah Terdaftar</span>
+                                </div>
+                                <div className="flex items-center justify-center gap-3 bg-white font-semibold text-secondarycolor text-xl px-3 py-2 rounded-lg mt-3">
+                                  <Link
+                                    to={`/bukti-pendaftaran/${payment._id}`}
+                                  >
+                                    Lihat Bukti Pendaftaran
+                                  </Link>
+                                </div>
                               </div>
                             ) : (
                               <CButton
@@ -231,7 +240,7 @@ export default function DashboardClient() {
                   );
                 })
             ) : (
-              <p className="text-center text-gray-500">
+              <p className="text-center text-gray-800">
                 Belum ada kegiatan pelatihan yang diikuti
               </p>
             )}
