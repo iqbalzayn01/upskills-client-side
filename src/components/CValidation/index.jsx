@@ -30,11 +30,14 @@ export default function CValidation() {
       if (register.userID && register.userID._id === user._id) {
         const { data_valid } = register.documentID;
 
-        if (data_valid === 'Belum Diperiksa') {
+        if (data_valid === 'Data Tidak Valid') {
           console.log('VALIDASI:', data_valid);
-          if (registrationID === register._id) {
-            navigate(`/proses-validasi/${registrationID}`);
-          }
+          navigate(`/invalid-data/${user._id}`, {
+            state: {
+              registrationID: register._id,
+              documentID: register.documentID._id,
+            },
+          });
         } else if (data_valid === 'Data Valid') {
           console.log('VALIDASI:', data_valid);
           navigate(`/proses-pembayaran/${register._id}`, {
@@ -42,6 +45,9 @@ export default function CValidation() {
           });
         } else {
           console.log('VALIDASI:', data_valid);
+          if (registrationID === register._id) {
+            navigate(`/proses-validasi/${registrationID}`);
+          }
         }
       }
     }

@@ -13,6 +13,7 @@ import Registration from '../pages/registration';
 import EventsLists from '../pages/eventsLists';
 import EventDetail from '../pages/eventDetail';
 import ValidationProcess from '../pages/registration/validationProcess';
+import InvalidData from '../pages/registration/invalidData';
 import PaymentPage from '../pages/payments';
 import ConfirmationPage from '../pages/confirmation';
 import PaymentSuccess from '../pages/successPage';
@@ -50,6 +51,7 @@ const router = createBrowserRouter(
           element={<Registration />}
         />
         <Route path="/proses-validasi/:id" element={<ValidationProcess />} />
+        <Route path="/invalid-data/:id" element={<InvalidData />} />
         <Route path="/proses-pembayaran/:id" element={<PaymentPage />} />
         <Route
           path="/konfirmasi-pembayaran/:id"
