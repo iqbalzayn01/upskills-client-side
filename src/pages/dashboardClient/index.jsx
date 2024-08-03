@@ -7,8 +7,8 @@ import { fetchAllSchedules } from '../../redux/schedules/actions';
 import { fetchAllRegistration } from '../../redux/registration/actions';
 import { fetchAllPay } from '../../redux/payments/actions';
 
+import { formatDateTime } from '../../utils/formatDateTime';
 import formatPrice from '../../utils/formatPrice';
-import formatDateTime from '../../utils/formatDateTime';
 import config from '../../config';
 import Header from '../../components/Header';
 import CButton from '../../components/CButton';

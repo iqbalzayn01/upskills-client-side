@@ -2,9 +2,9 @@ import { Navigate, Outlet } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 export default function RequireAuth() {
-  const getToken = useSelector((state) => state.auth.token);
+  const { token } = useSelector((state) => state.auth);
 
-  if (!getToken) return <Navigate to="/signin" replace />;
+  if (!token) return <Navigate to="/signin" replace />;
 
   return <Outlet />;
 }

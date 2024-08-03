@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 
 import { userLogged } from '../../../redux/auth/actions';
 import { fetchAllPay } from '../../../redux/payments/actions';
-import formatDateTime from '../../../utils/formatDateTime';
+import { formatDateTime } from '../../../utils/formatDateTime';
 import Sidebar from '../../components/Sidebar';
 
 export default function DataPembayaran() {

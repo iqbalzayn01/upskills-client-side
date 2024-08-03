@@ -6,7 +6,7 @@ import config from '../../config';
 import { fetchAllSchedules } from '../../redux/schedules/actions';
 import { fetchAllRegistration } from '../../redux/registration/actions';
 import { userLogged } from '../../redux/auth/actions';
-import formatDateTime from '../../utils/formatDateTime';
+import { formatDateTime } from '../../utils/formatDateTime';
 import formatPrice from '../../utils/formatPrice';
 
 import CButton from '../CButton';
@@ -30,7 +30,7 @@ export default function CEventsList() {
 
   const register = (eventID, scheduleID) => {
     if (getToken && user) {
-      navigate('/pendaftaran-kegiatan-pelatihan', {
+      navigate(`/pendaftaran-kegiatan-pelatihan/${scheduleID}`, {
         state: { eventID, scheduleID, userID: user._id },
       });
     } else {

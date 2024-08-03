@@ -27,7 +27,7 @@ const RequireAdmin = () => {
     return <Navigate to="/signin" replace />;
   }
 
-  if (user && user.role !== 'admin') {
+  if (user?.role !== 'admin') {
     return <Navigate to="/dashboard-peserta" replace />;
   }
 

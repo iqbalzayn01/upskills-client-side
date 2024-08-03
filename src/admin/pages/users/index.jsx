@@ -62,6 +62,7 @@ export default function DataUser() {
             <thead>
               <tr>
                 <th className="text-left px-4 py-2">No</th>
+                <th className="text-left px-4 py-2">ID Peserta</th>
                 <th className="text-left px-4 py-2">Name</th>
                 <th className="text-left px-4 py-2">Email</th>
                 <th className="text-left px-4 py-2">Nomor Telepon</th>
@@ -76,6 +77,7 @@ export default function DataUser() {
                   .map((user, index) => (
                     <tr key={user._id} className="border-t">
                       <td className="px-4 py-2">{index + 1}</td>
+                      <td className="px-4 py-2">{user.id_user}</td>
                       <td className="px-4 py-2">{user.name}</td>
                       <td className="px-4 py-2">{user.email}</td>
                       <td className="px-4 py-2">{user.no_telp}</td>
@@ -93,21 +95,21 @@ export default function DataUser() {
                         >
                           Hapus
                         </button>
-                        {isPopUpOpen && (
-                          <PopUp
-                            handle={handleDelete}
-                            onClose={() => setIsPopUpOpen(false)}
-                            textPopUp="Apakah anda yakin ingin menghapus data ini?"
-                            classNameBtn="bg-red-500"
-                            textBtn="Hapus"
-                          />
-                        )}
                       </td>
                     </tr>
                   ))}
             </tbody>
           </table>
         </div>
+        {isPopUpOpen && (
+          <PopUp
+            handle={handleDelete}
+            onClose={() => setIsPopUpOpen(false)}
+            textPopUp="Apakah anda yakin ingin menghapus data ini?"
+            classNameBtn="bg-red-500"
+            textBtn="Hapus"
+          />
+        )}
       </main>
       {isModalOpen && (
         <AddUserModal

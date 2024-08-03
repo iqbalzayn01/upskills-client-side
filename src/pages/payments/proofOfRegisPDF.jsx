@@ -7,7 +7,7 @@ import {
   StyleSheet,
   Image,
 } from '@react-pdf/renderer';
-import formatDateTime from '../../utils/formatDateTime';
+import { formatDateTime } from '../../utils/formatDateTime';
 
 // Create styles
 const styles = StyleSheet.create({

@@ -6,8 +6,8 @@ import { PDFDownloadLink } from '@react-pdf/renderer';
 import { userLogged } from '../../redux/auth/actions';
 import { fetchOnePay } from '../../redux/payments/actions';
 import { fetchAllSchedules } from '../../redux/schedules/actions';
+import { formatDateTime } from '../../utils/formatDateTime';
 import ProofOfRegisPDF from './proofOfRegisPDF';
-import formatDateTime from '../../utils/formatDateTime';
 
 export default function ProofOfRegis() {
   const { id } = useParams();

@@ -62,10 +62,12 @@ export default function SignIn() {
       setIsLoading(false);
       // dispatch(hideLoading());
 
-      if (user?.role === 'admin') {
-        navigate('/dashboard-admin');
-      } else {
-        navigate('/dashboard-peserta');
+      if (user) {
+        if (user.role === 'peserta') {
+          navigate('/dashboard-peserta');
+        } else {
+          navigate('/dashboard-admin');
+        }
       }
     } catch (error) {
       console.error('Error login:', error);

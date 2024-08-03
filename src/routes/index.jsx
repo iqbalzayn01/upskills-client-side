@@ -46,7 +46,7 @@ const router = createBrowserRouter(
       <Route element={<RequireAuth />}>
         <Route path="/dashboard-peserta" element={<DashboardClient />} />
         <Route
-          path="/pendaftaran-kegiatan-pelatihan"
+          path="/pendaftaran-kegiatan-pelatihan/:id"
           element={<Registration />}
         />
         <Route path="/proses-validasi/:id" element={<ValidationProcess />} />

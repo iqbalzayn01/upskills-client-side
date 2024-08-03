@@ -13,6 +13,7 @@ import AddTalentModal from './addTalentModal';
 export default function DataNarasumber() {
   const { talents, error } = useSelector((state) => state.talents);
   const [selectedTalent, setSelectedTalent] = useState(null);
+  const [talentIdDelete, setTalentIdDelete] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isPopUpOpen, setIsPopUpOpen] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
@@ -34,12 +35,13 @@ export default function DataNarasumber() {
     setIsModalOpen(true);
   };
 
-  const handlePopUpDelete = () => {
+  const handlePopUpDelete = (id) => {
+    setTalentIdDelete(id);
     setIsPopUpOpen(true);
   };
 
-  const handleDelete = (id) => {
-    dispatch(fetchDeleteTalent(id));
+  const handleDelete = () => {
+    dispatch(fetchDeleteTalent(talentIdDelete));
     setIsPopUpOpen(false);
   };
 
@@ -63,6 +65,7 @@ export default function DataNarasumber() {
             <thead>
               <tr>
                 <th className="text-left px-4 py-2">No</th>
+                <th className="text-left px-4 py-2">ID Narasumber</th>
                 <th className="text-left px-4 py-2">Nama</th>
                 <th className="text-left px-4 py-2">Email</th>
                 <th className="text-left px-4 py-2">Nomor Telepon</th>
@@ -77,6 +80,7 @@ export default function DataNarasumber() {
                   .map((talent, index) => (
                     <tr key={talent._id} className="border-t">
                       <td className="px-4 py-2">{index + 1}</td>
+                      <td className="px-4 py-2">{talent.id_talent}</td>
                       <td className="px-4 py-2">{talent.name}</td>
                       <td className="px-4 py-2">{talent.email}</td>
                       <td className="px-4 py-2">{talent.no_telp}</td>
@@ -90,25 +94,25 @@ export default function DataNarasumber() {
                         </button>
                         <button
                           className="bg-red-500 text-white px-2 py-1 rounded"
-                          onClick={handlePopUpDelete}
+                          onClick={() => handlePopUpDelete(talent?._id)}
                         >
                           Hapus
                         </button>
-                        {isPopUpOpen && (
-                          <PopUp
-                            handle={() => handleDelete(talent._id)}
-                            onClose={() => setIsPopUpOpen(false)}
-                            textPopUp="Apakah anda yakin ingin menghapus data ini?"
-                            classNameBtn="bg-red-500"
-                            textBtn="Hapus"
-                          />
-                        )}
                       </td>
                     </tr>
                   ))}
             </tbody>
           </table>
         </div>
+        {isPopUpOpen && (
+          <PopUp
+            handle={handleDelete}
+            onClose={() => setIsPopUpOpen(false)}
+            textPopUp="Apakah anda yakin ingin menghapus data ini?"
+            classNameBtn="bg-red-500"
+            textBtn="Hapus"
+          />
+        )}
       </main>
       {isModalOpen && (
         <AddTalentModal

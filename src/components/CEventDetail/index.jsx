@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { fetchOneSchedule } from '../../redux/schedules/actions';
 import { userLogged } from '../../redux/auth/actions';
-import formatDateTime from '../../utils/formatDateTime';
+import { formatDateTime } from '../../utils/formatDateTime';
 import formatPrice from '../../utils/formatPrice';
 import config from '../../config';
 

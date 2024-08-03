@@ -113,15 +113,6 @@ export default function DataPendaftaran() {
                         >
                           Hapus
                         </button>
-                        {isPopUpOpen && (
-                          <PopUp
-                            handle={handleDelete}
-                            onClose={() => setIsPopUpOpen(false)}
-                            textPopUp="Apakah anda yakin ingin menghapus data ini?"
-                            classNameBtn="bg-red-500"
-                            textBtn="Hapus"
-                          />
-                        )}
                       </td>
                     </tr>
                   ))
@@ -138,6 +129,15 @@ export default function DataPendaftaran() {
             </tbody>
           </table>
         </div>
+        {isPopUpOpen && (
+          <PopUp
+            handle={handleDelete}
+            onClose={() => setIsPopUpOpen(false)}
+            textPopUp="Apakah anda yakin ingin menghapus data ini?"
+            classNameBtn="bg-red-500"
+            textBtn="Hapus"
+          />
+        )}
       </main>
       {isModalOpen && (
         <EditStatusDocument

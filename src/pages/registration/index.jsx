@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
+import config from '../../config';
 
 import { userLogged } from '../../redux/auth/actions';
 import { fetchOneSchedule } from '../../redux/schedules/actions';
@@ -9,24 +10,27 @@ import { fetchCreateRegistration } from '../../redux/registration/actions';
 
 import Header from '../../components/Header';
 import CButton from '../../components/CButton';
+import { formatDate } from '../../utils/formatDateTime';
 
 export default function Registration() {
   const { user } = useSelector((state) => state.auth);
-  const getToken = useSelector((state) => state.auth.token);
+  const { token } = useSelector((state) => state.auth);
+  const { schedule } = useSelector((state) => state.schedules);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+  const BASE_URL = config.url;
 
   const [file, setFile] = useState(null);
 
   const { eventID, scheduleID, userID } = location.state || {};
 
   useEffect(() => {
-    if (getToken) {
+    if (token) {
       dispatch(userLogged());
       dispatch(fetchOneSchedule(scheduleID));
     }
-  }, [getToken, dispatch, scheduleID]);
+  }, [token, dispatch, scheduleID]);
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
@@ -95,35 +99,113 @@ export default function Registration() {
               Pendaftaran Kegiatan Pelatihan
             </h2>
             <div className="flex flex-col items-center justify-center gap-5 p-6 mb-5 shadow-md border border-slate-300 rounded-xl">
-              {getToken && (
+              {token && schedule?.eventID && (
+                <div className="grid md:grid-cols-2 grid-cols-1 gap-5">
+                  <div className="">
+                    {schedule.eventID.imageID &&
+                      schedule.eventID.imageID.fileName && (
+                        <img
+                          src={`${BASE_URL}${schedule.eventID.imageID.fileName}`}
+                          alt={schedule.eventID.name}
+                          className="w-full h-full object-cover bg-cover rounded-lg"
+                        />
+                      )}
+                  </div>
+                  <div className="flex flex-col justify-center gap-3">
+                    <h4 className="font-medium text-2xl">Kegiatan</h4>
+                    <div className="w-full">
+                      <label className="text-sm text-gray-500">
+                        ID Kegiatan
+                      </label>
+                      <p className="w-full text-input mt-3">
+                        {schedule.eventID.id_event}
+                      </p>
+                    </div>
+                    <div className="w-full">
+                      <label className="text-sm text-gray-500">
+                        Nama Kegiatan
+                      </label>
+                      <p className="w-full text-input mt-3">
+                        {schedule.eventID.name}
+                      </p>
+                    </div>
+                    <div className="w-full">
+                      <label className="text-sm text-gray-500">Deskripsi</label>
+                      <p className="w-full text-input mt-3">
+                        {schedule.eventID.description}
+                      </p>
+                    </div>
+                    <div className="w-full">
+                      <label className="text-sm text-gray-500">
+                        Narasumber
+                      </label>
+                      <p className="w-full text-input mt-3">
+                        {schedule.talentID.name}
+                      </p>
+                    </div>
+                    <div className="flex gap-5">
+                      <div className="w-full">
+                        <label className="text-sm text-gray-500">Harga</label>
+                        <p className="w-full text-input mt-3">
+                          {schedule.eventID.price}
+                        </p>
+                      </div>
+                      <div className="w-full">
+                        <label className="text-sm text-gray-500">Jadwal</label>
+                        {schedule.schedules.map((time, subIndex) => (
+                          <div key={subIndex} className="flex gap-10">
+                            <p className="w-full text-input mt-3">
+                              {formatDate(time.start_time)}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+            <div className="flex flex-col items-center justify-center gap-5 p-6 mb-5 shadow-md border border-slate-300 rounded-xl">
+              <h4 className="font-medium text-2xl">Data Pendaftaran</h4>
+              {token && (
                 <div className="flex flex-col justify-center gap-3">
-                  <div className="w-full md:w-[600px]">
+                  <div className="w-full">
                     <label className="text-sm text-gray-500">Nama</label>
                     <p className="w-full text-input mt-3">{user.name}</p>
                   </div>
-                  <div className="w-full md:w-[600px]">
+                  <div className="w-full">
                     <label className="text-sm text-gray-500">Email</label>
                     <p className="w-full text-input mt-3">{user.email}</p>
                   </div>
-                  <div className="w-full md:w-[600px]">
+                  <div className="w-full">
                     <label className="text-sm text-gray-500">
                       Nomor Telepon
                     </label>
                     <p className="w-full text-input mt-3">{user.no_telp}</p>
                   </div>
-                  <div className="w-full md:w-[600px]">
+                  <div className="w-full">
                     <label className="text-sm text-gray-500">Role</label>
                     <p className="w-full text-input mt-3">{user.role}</p>
                   </div>
                   <form onSubmit={handleSubmit} className="w-full">
                     <div className="mb-4">
-                      <label
-                        htmlFor="fileName"
-                        className="text-sm text-gray-500"
-                      >
-                        Unggah Dokumen{' '}
-                        <span className="text-red-500">{`(Format PDF *)`}</span>
-                      </label>
+                      <div className="flex flex-col gap-3">
+                        <label
+                          htmlFor="fileName"
+                          className="text-sm text-gray-500"
+                        >
+                          Unggah Dokumen{' '}
+                          <span className="text-red-500">{`(Format PDF *)`}</span>
+                        </label>
+                        <label className="font-semibold text-sm p-3 border border-slate-300 rounded-xl">
+                          Untuk melengkapi proses pendaftaran, Anda diwajibkan
+                          mengunggah beberapa dokumen penting, termasuk Kartu
+                          Tanda Penduduk {'(KTP)'} atau Surat Keterangan
+                          Mahasiswa yang masih berlaku. Pastikan semua dokumen
+                          diunggah dalam format PDF dan memiliki kualitas yang
+                          jelas agar memudahkan proses verifikasi.
+                        </label>
+                      </div>
                       <input
                         id="fileName"
                         name="fileName"
