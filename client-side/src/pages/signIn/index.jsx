@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Navigate } from 'react-router-dom';
 // import { showLoading, hideLoading } from 'react-redux-loading-bar';
 
 import { signIn } from '../../redux/auth/actions';
@@ -78,7 +78,7 @@ export default function SignIn() {
   };
 
   if (token && user) {
-    return null; // Sementara tunggu useEffect mengarahkan
+    return <Navigate to="/" replace />;
   }
 
   return (

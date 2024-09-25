@@ -7,20 +7,19 @@ import Navbar from '../Navbar';
 import CButton from '../CButton';
 
 export default function Header() {
-  const getToken = useSelector((state) => state.auth.token);
-  const { user } = useSelector((state) => state.auth);
+  const { token, user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (getToken) {
+    if (token) {
       dispatch(userLogged());
     }
-  }, [getToken, dispatch]);
+  }, [token, dispatch]);
 
   const handleSignOut = () => {
     dispatch(clearToken());
-    navigate('/signin');
+    navigate('/');
   };
 
   return (
@@ -52,7 +51,7 @@ export default function Header() {
         </Link>
         <Navbar className="flex items-center text-secondarycolor gap-10" />
         <div className="flex items-center justify-end gap-5">
-          {getToken ? (
+          {token ? (
             <>
               <CButton
                 onClick={() => navigate('/dashboard-peserta')}

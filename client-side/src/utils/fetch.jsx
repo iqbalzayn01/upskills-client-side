@@ -1,38 +1,43 @@
+import axios from 'axios';
 import config from '../config';
 
 const BASE_URL = config.base_url;
 
 async function fetchWithToken(url, options = {}) {
-  const getToken = localStorage.getItem('token');
+  const authData = localStorage.getItem('auth');
+  let token = null;
+  if (authData) {
+    const parsedAuthData = JSON.parse(authData);
+    token = parsedAuthData.token;
+  }
 
-  return fetch(url, {
-    ...options,
-    headers: {
-      ...options.headers,
-      Authorization: `Bearer ${getToken}`,
-    },
-  });
+  try {
+    return await axios(url, {
+      ...options,
+      headers: {
+        ...options.headers,
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  } catch (error) {
+    localStorage.removeItem('auth');
+    console.error('Fetch error', error);
+    throw error;
+  }
 }
 
 async function login({ email, password }) {
-  const response = await fetch(`${BASE_URL}/auth/login`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ email, password }),
-  });
+  try {
+    const response = await axios.post(`${BASE_URL}/auth/login`, {
+      email,
+      password,
+    });
 
-  const responseJson = await response.json();
-
-  if (!response.ok) {
-    alert('Email atau Password salah');
-    const errorData = await response.json();
-    console.error('Error response:', errorData);
-    throw new Error(errorData.msg || 'Login failed');
+    return { error: false, data: response.data.data };
+  } catch (error) {
+    console.error('Error response:', error.response?.data || error);
+    throw new Error(error.response?.data?.message || 'Login failed');
   }
-
-  return { error: false, data: responseJson.data };
 }
 
 async function signup({
@@ -43,49 +48,43 @@ async function signup({
   no_telp,
   role,
 }) {
-  const response = await fetch(`${BASE_URL}/sign-up`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
+  try {
+    const response = await axios.post(`${BASE_URL}/sign-up`, {
       name,
       email,
       password,
       confirmPassword,
       no_telp,
       role,
-    }),
-  });
+    });
 
-  const responseJson = await response.json();
-
-  if (!response.ok) {
-    alert(responseJson.msg);
+    return { error: false, data: response.data.data };
+  } catch (error) {
+    alert(error.response?.data?.message || 'An error occurred during signup');
     return { error: true, data: null };
   }
-
-  return { error: false, data: responseJson.data };
 }
 
 async function getUserLogged() {
-  const response = await fetchWithToken(`${BASE_URL}/users/me`);
-  const responseJson = await response.json();
-
-  if (!response.ok) {
-    if (response.status === 500 && responseJson.msg === 'jwt expired') {
-      localStorage.removeItem('token');
+  try {
+    const response = await fetchWithToken(`${BASE_URL}/users/me`);
+    return { error: false, data: response.data.data };
+  } catch (error) {
+    if (
+      error.response &&
+      error.response.status === 500 &&
+      error.response.data.msg === 'jwt expired'
+    ) {
+      localStorage.removeItem('auth');
       window.location.href = '/signin';
       return { error: true, data: null, message: 'Token expired' };
     }
     return {
       error: true,
       data: null,
-      message: responseJson?.msg || 'Fetch failed',
+      message: error.response?.data?.msg || 'Fetch failed',
     };
   }
-
-  return { error: false, data: responseJson.data };
 }
 
 async function getAllUsers() {
