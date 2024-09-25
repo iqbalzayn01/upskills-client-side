@@ -88,318 +88,315 @@ async function getUserLogged() {
 }
 
 async function getAllUsers() {
-  const response = await fetchWithToken(`${BASE_URL}/users`);
-  const responseJson = await response.json();
-
-  if (!response.ok) {
-    return { error: true, data: null };
+  try {
+    const response = await fetchWithToken(`${BASE_URL}/users`);
+    return { error: false, data: response.data.data };
+  } catch (error) {
+    console.log('Error fetching users:', error);
+    throw new Error(error.response?.data?.message || 'Failed to fetch users');
   }
-
-  return { error: false, data: responseJson.data };
 }
 
 async function updateUsers(id, userData) {
-  const response = await fetchWithToken(`${BASE_URL}/users/${id}`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(userData),
-  });
+  try {
+    const response = await fetchWithToken(`${BASE_URL}/users/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: userData,
+    });
 
-  const responseJson = await response.json();
-
-  if (!response.ok) {
-    alert(responseJson.msg);
-    return { error: true, data: null };
+    return { error: false, data: response.data.data };
+  } catch (error) {
+    alert(error.response?.data?.msg || 'Failed to update user');
+    console.error('Error updating user:', error);
+    throw new Error(error.response?.data?.message || 'Failed to update user');
   }
-
-  return { error: false, data: responseJson.data };
 }
 
 async function deleteUser(id) {
-  const response = await fetchWithToken(`${BASE_URL}/users/${id}`, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
+  try {
+    await fetchWithToken(`${BASE_URL}/users/${id}`, {
+      method: 'DELETE',
+    });
 
-  if (!response.ok) {
-    const responseJson = await response.json();
-    alert(responseJson.msg);
-    return { error: true };
+    return { error: false };
+  } catch (error) {
+    alert(error.response?.data?.msg || 'Failed to delete user');
+    console.error('Error deleting user:', error);
+    throw new Error(error.response?.data?.message || 'Failed to delete user');
   }
-
-  return { error: false };
 }
 
 async function createTalents({ name, email, no_telp }) {
-  const response = await fetchWithToken(`${BASE_URL}/create-talents`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      name,
-      email,
-      no_telp,
-    }),
-  });
+  try {
+    const response = await fetchWithToken(`${BASE_URL}/create-talents`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: {
+        name,
+        email,
+        no_telp,
+      },
+    });
 
-  const responseJson = await response.json();
-
-  if (!response.ok) {
-    alert(responseJson.msg);
-    return { error: true, data: null };
+    return { error: false, data: response.data.data };
+  } catch (error) {
+    alert(error.response?.data?.msg || 'Failed to create talent');
+    console.error('Error creating talent:', error);
+    throw new Error(error.response?.data?.message || 'Failed to create talent');
   }
-
-  return { error: false, data: responseJson.data };
 }
 
 async function getAllTalents() {
-  const response = await fetchWithToken(`${BASE_URL}/talents`);
-  const responseJson = await response.json();
-
-  if (!response.ok) {
-    return { error: true, data: null };
+  try {
+    const response = await fetchWithToken(`${BASE_URL}/talents`);
+    return { error: false, data: response.data.data };
+  } catch (error) {
+    console.error('Error fetching talents:', error);
+    throw new Error(error.response?.data?.message || 'Failed to fetch talents');
   }
-
-  return { error: false, data: responseJson.data };
 }
 
 async function updateTalents(id, talentData) {
-  const response = await fetchWithToken(`${BASE_URL}/talents/${id}`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(talentData),
-  });
+  try {
+    const response = await fetchWithToken(`${BASE_URL}/talents/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: talentData,
+    });
 
-  const responseJson = await response.json();
-
-  if (!response.ok) {
-    alert(responseJson.msg);
-    return { error: true, data: null };
+    return { error: false, data: response.data.data };
+  } catch (error) {
+    alert(error.response?.data?.msg || 'Failed to update talent');
+    console.error('Error updating talent:', error);
+    throw new Error(error.response?.data?.message || 'Failed to update talent');
   }
-
-  return { error: false, data: responseJson.data };
 }
 
 async function deleteTalent(id) {
-  const response = await fetchWithToken(`${BASE_URL}/talents/${id}`, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
+  try {
+    await fetchWithToken(`${BASE_URL}/talents/${id}`, {
+      method: 'DELETE',
+    });
 
-  if (!response.ok) {
-    const responseJson = await response.json();
-    alert(responseJson.msg);
-    return { error: true };
+    return { error: false };
+  } catch (error) {
+    alert(error.response?.data?.msg || 'Failed to delete talent');
+    console.error('Error deleting talent:', error);
+    throw new Error(error.response?.data?.message || 'Failed to delete talent');
   }
-
-  return { error: false };
 }
 
 async function createSchedules({ schedules, batas_daftar, talentID, eventID }) {
-  const response = await fetchWithToken(`${BASE_URL}/create-schedules`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      schedules,
-      batas_daftar,
-      talentID,
-      eventID,
-    }),
-  });
-  const responseJson = await response.json();
+  try {
+    const response = await fetchWithToken(`${BASE_URL}/create-schedules`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: {
+        schedules,
+        batas_daftar,
+        talentID,
+        eventID,
+      },
+    });
 
-  if (!response.ok) {
-    alert(responseJson.msg);
-    return { error: true, data: null };
+    return { error: false, data: response.data.data };
+  } catch (error) {
+    alert(error.response?.data?.msg || 'Failed to create schedule');
+    console.error('Error creating schedule:', error);
+    throw new Error(
+      error.response?.data?.message || 'Failed to create schedule'
+    );
   }
-
-  return { error: false, data: responseJson.data };
 }
 
 async function getAllSchedules() {
-  const response = await fetchWithToken(`${BASE_URL}/schedules`);
-  const responseJson = await response.json();
-
-  if (!response.ok) {
-    return { error: true, data: null };
+  try {
+    const response = await fetchWithToken(`${BASE_URL}/schedules`);
+    return { error: false, data: response.data.data };
+  } catch (error) {
+    console.error('Error fetching schedules:', error);
+    throw new Error(
+      error.response?.data?.message || 'Failed to fetch schedules'
+    );
   }
-
-  return { error: false, data: responseJson.data };
 }
 
 async function getOneSchedule(id) {
-  const response = await fetchWithToken(`${BASE_URL}/schedules/${id}`);
-  const responseJson = await response.json();
-
-  if (!response.ok) {
-    return { error: true, data: null };
+  try {
+    const response = await fetchWithToken(`${BASE_URL}/schedules/${id}`);
+    return { error: false, data: response.data.data };
+  } catch (error) {
+    console.error('Error fetching schedule:', error);
+    throw new Error(
+      error.response?.data?.message || 'Failed to fetch schedule'
+    );
   }
-
-  return { error: false, data: responseJson.data };
 }
 
 async function deleteSchedules(id) {
-  const response = await fetchWithToken(`${BASE_URL}/schedules/${id}`, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
+  try {
+    await fetchWithToken(`${BASE_URL}/schedules/${id}`, {
+      method: 'DELETE',
+    });
 
-  if (!response.ok) {
-    const responseJson = await response.json();
-    alert(responseJson.msg);
-    return { error: true };
+    return { error: false };
+  } catch (error) {
+    alert(error.response?.data?.msg || 'Failed to delete schedule');
+    console.error('Error deleting schedule:', error);
+    throw new Error(
+      error.response?.data?.message || 'Failed to delete schedule'
+    );
   }
-
-  return { error: false };
 }
 
 async function uploadDocuments(document) {
-  const response = await fetchWithToken(`${BASE_URL}/upload-documents`, {
-    method: 'POST',
-    body: document,
-  });
+  try {
+    const response = await fetchWithToken(`${BASE_URL}/upload-documents`, {
+      method: 'POST',
+      data: document instanceof FormData ? document : new FormData(document),
+    });
 
-  const responseJson = await response.json();
-
-  if (!response.ok) {
-    alert(responseJson.msg);
-    return { error: true, data: null };
+    return { error: false, data: response.data.data };
+  } catch (error) {
+    alert(error.response?.data?.msg || 'Failed to upload document');
+    console.error('Error uploading document:', error);
+    throw new Error(
+      error.response?.data?.message || 'Failed to upload document'
+    );
   }
-
-  return { error: false, data: responseJson.data };
 }
 
 async function getAllDocuments() {
-  const response = await fetchWithToken(`${BASE_URL}/documents`);
-  const responseJson = await response.json();
-
-  if (!response.ok) {
-    return { error: true, data: null };
+  try {
+    const response = await fetchWithToken(`${BASE_URL}/documents`);
+    return { error: false, data: response.data.data };
+  } catch (error) {
+    console.error('Error fetching documents:', error);
+    throw new Error(
+      error.response?.data?.message || 'Failed to fetch documents'
+    );
   }
-
-  return { error: false, data: responseJson.data };
 }
 
 async function getOneDocument(id) {
-  const response = await fetchWithToken(`${BASE_URL}/documents/${id}`);
-  const responseJson = await response.json();
-
-  if (!response.ok) {
-    return { error: true, data: null };
+  try {
+    const response = await fetchWithToken(`${BASE_URL}/documents/${id}`);
+    return { error: false, data: response.data.data };
+  } catch (error) {
+    console.error('Error fetching document:', error);
+    throw new Error(
+      error.response?.data?.message || 'Failed to fetch document'
+    );
   }
-
-  return { error: false, data: responseJson.data };
 }
 
 async function updateDocuments(id, dataDocument) {
-  const response = await fetchWithToken(`${BASE_URL}/documents/${id}`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(dataDocument),
-  });
+  try {
+    const response = await fetchWithToken(`${BASE_URL}/documents/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: dataDocument,
+    });
 
-  const responseJson = await response.json();
-
-  if (!response.ok) {
-    alert(responseJson.msg);
-    return { error: true, data: null };
+    return { error: false, data: response.data.data };
+  } catch (error) {
+    alert(error.response?.data?.msg || 'Failed to update document');
+    console.error('Error updating document:', error);
+    throw new Error(
+      error.response?.data?.message || 'Failed to update document'
+    );
   }
-
-  return { error: false, data: responseJson.data };
 }
 
 async function deleteDocument(id) {
-  const response = await fetchWithToken(`${BASE_URL}/documents/${id}`, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
+  try {
+    await fetchWithToken(`${BASE_URL}/documents/${id}`, {
+      method: 'DELETE',
+    });
 
-  if (!response.ok) {
-    const responseJson = await response.json();
-    alert(responseJson.msg);
-    return { error: true };
+    return { error: false };
+  } catch (error) {
+    alert(error.response?.data?.msg || 'Failed to delete document');
+    console.error('Error deleting document:', error);
+    throw new Error(
+      error.response?.data?.message || 'Failed to delete document'
+    );
   }
-
-  return { error: false };
 }
 
 async function registration({ userID, documentID, eventID }) {
-  const response = await fetchWithToken(`${BASE_URL}/create-registration`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      userID,
-      documentID,
-      eventID,
-    }),
-  });
+  try {
+    const response = await fetchWithToken(`${BASE_URL}/create-registration`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: {
+        userID,
+        documentID,
+        eventID,
+      },
+    });
 
-  const responseJson = await response.json();
-
-  if (!response.ok) {
-    alert(responseJson.msg);
-    return { error: true, data: null };
+    return { error: false, data: response.data.data };
+  } catch (error) {
+    alert(error.response?.data?.msg || 'Failed to create registration');
+    console.error('Error creating registration:', error);
+    throw new Error(
+      error.response?.data?.message || 'Failed to create registration'
+    );
   }
-
-  return { error: false, data: responseJson.data };
 }
 
 async function getAllRegistration() {
-  const response = await fetchWithToken(`${BASE_URL}/registration`);
-  const responseJson = await response.json();
-
-  if (!response.ok) {
-    return { error: true, data: null };
+  try {
+    const response = await fetchWithToken(`${BASE_URL}/registration`);
+    return { error: false, data: response.data.data };
+  } catch (error) {
+    console.error('Error fetching registrations:', error);
+    throw new Error(
+      error.response?.data?.message || 'Failed to fetch registrations'
+    );
   }
-
-  return { error: false, data: responseJson.data };
 }
 
 async function getOneRegistration(id) {
-  const response = await fetchWithToken(`${BASE_URL}/registration/${id}`);
-  const responseJson = await response.json();
-
-  if (!response.ok) {
-    return { error: true, data: null };
+  try {
+    const response = await fetchWithToken(`${BASE_URL}/registration/${id}`);
+    return { error: false, data: response.data.data };
+  } catch (error) {
+    console.error('Error fetching registration:', error);
+    throw new Error(
+      error.response?.data?.message || 'Failed to fetch registration'
+    );
   }
-
-  return { error: false, data: responseJson.data };
 }
 
 async function deleteRegistration(id) {
-  const response = await fetchWithToken(`${BASE_URL}/registration/${id}`, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
+  try {
+    await fetchWithToken(`${BASE_URL}/registration/${id}`, {
+      method: 'DELETE',
+    });
 
-  if (!response.ok) {
-    const responseJson = await response.json();
-    alert(responseJson.msg);
-    return { error: true };
+    return { error: false };
+  } catch (error) {
+    alert(error.response?.data?.msg || 'Failed to delete registration');
+    console.error('Error deleting registration:', error);
+    throw new Error(
+      error.response?.data?.message || 'Failed to delete registration'
+    );
   }
-
-  return { error: false };
 }
 
 async function createEvents({
@@ -412,159 +409,151 @@ async function createEvents({
   imageID,
   kuota,
 }) {
-  const response = await fetchWithToken(`${BASE_URL}/create-events`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      name,
-      description,
-      event_status,
-      location,
-      price,
-      linkMeeting,
-      imageID,
-      kuota,
-    }),
-  });
+  try {
+    const response = await fetchWithToken(`${BASE_URL}/create-events`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: {
+        name,
+        description,
+        event_status,
+        location,
+        price,
+        linkMeeting,
+        imageID,
+        kuota,
+      },
+    });
 
-  const responseJson = await response.json();
-
-  if (!response.ok) {
-    alert(responseJson.msg);
-    return { error: true, data: null };
+    return { error: false, data: response.data.data };
+  } catch (error) {
+    alert(error.response?.data?.msg || 'Failed to create event');
+    console.error('Error creating event:', error);
+    throw new Error(error.response?.data?.message || 'Failed to create event');
   }
-
-  return { error: false, data: responseJson.data };
 }
 
 async function getAllEvents() {
-  const response = await fetchWithToken(`${BASE_URL}/events`);
-  const responseJson = await response.json();
-
-  if (!response.ok) {
-    return { error: true, data: null };
+  try {
+    const response = await fetchWithToken(`${BASE_URL}/events`);
+    return { error: false, data: response.data.data };
+  } catch (error) {
+    console.error('Error fetching events:', error);
+    throw new Error(error.response?.data?.message || 'Failed to fetch events');
   }
-
-  return { error: false, data: responseJson.data };
 }
 
 async function updateEvents(id, eventData) {
-  const response = await fetchWithToken(`${BASE_URL}/events/${id}`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(eventData),
-  });
+  try {
+    const response = await fetchWithToken(`${BASE_URL}/events/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: eventData,
+    });
 
-  const responseJson = await response.json();
-
-  if (!response.ok) {
-    alert(responseJson.msg);
-    return { error: true, data: null };
+    return { error: false, data: response.data.data };
+  } catch (error) {
+    alert(error.response?.data?.msg || 'Failed to update event');
+    console.error('Error updating event:', error);
+    throw new Error(error.response?.data?.message || 'Failed to update event');
   }
-
-  return { error: false, data: responseJson.data };
 }
 
 async function deleteEvent(id) {
-  const response = await fetchWithToken(`${BASE_URL}/events/${id}`, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
+  try {
+    await fetchWithToken(`${BASE_URL}/events/${id}`, {
+      method: 'DELETE',
+    });
 
-  if (!response.ok) {
-    const responseJson = await response.json();
-    alert(responseJson.msg);
-    return { error: true };
+    return { error: false };
+  } catch (error) {
+    alert(error.response?.data?.msg || 'Failed to delete event');
+    console.error('Error deleting event:', error);
+    throw new Error(error.response?.data?.message || 'Failed to delete event');
   }
-
-  return { error: false };
 }
 
 async function uploadImages(images) {
-  const response = await fetchWithToken(`${BASE_URL}/images`, {
-    method: 'POST',
-    body: images,
-  });
+  try {
+    const response = await fetchWithToken(`${BASE_URL}/images`, {
+      method: 'POST',
+      data: images instanceof FormData ? images : new FormData(images),
+    });
 
-  const responseJson = await response.json();
-
-  if (!response.ok) {
-    alert(responseJson.msg);
-    return { error: true, data: null };
+    return { error: false, data: response.data.data };
+  } catch (error) {
+    alert(error.response?.data?.msg || 'Failed to upload images');
+    console.error('Error uploading images:', error);
+    throw new Error(error.response?.data?.message || 'Failed to upload images');
   }
-
-  return { error: false, data: responseJson.data };
 }
 
 async function getAllImages() {
-  const response = await fetchWithToken(`${BASE_URL}/images`);
-  const responseJson = await response.json();
-
-  if (!response.ok) {
-    return { error: true, data: null };
+  try {
+    const response = await fetchWithToken(`${BASE_URL}/images`);
+    return { error: false, data: response.data.data };
+  } catch (error) {
+    console.error('Error fetching images:', error);
+    throw new Error(error.response?.data?.message || 'Failed to fetch images');
   }
-
-  return { error: false, data: responseJson.data };
 }
 
 async function getOneImages(id) {
-  const response = await fetchWithToken(`${BASE_URL}/images/${id}`);
-  const responseJson = await response.json();
-
-  if (!response.ok) {
-    return { error: true, data: null };
+  try {
+    const response = await fetchWithToken(`${BASE_URL}/images/${id}`);
+    return { error: false, data: response.data.data };
+  } catch (error) {
+    console.error('Error fetching image:', error);
+    throw new Error(error.response?.data?.message || 'Failed to fetch image');
   }
-
-  return { error: false, data: responseJson.data };
 }
 
 async function createPayments(registrationID) {
-  const response = await fetchWithToken(`${BASE_URL}/create-payments`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      registrationID,
-    }),
-  });
+  try {
+    const response = await fetchWithToken(`${BASE_URL}/create-payments`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: {
+        registrationID,
+      },
+    });
 
-  const responseJson = await response.json();
-
-  if (!response.ok) {
-    alert(responseJson.msg);
-    return { error: true, data: null };
+    return { error: false, data: response.data.data };
+  } catch (error) {
+    alert(error.response?.data?.msg || 'Failed to create payment');
+    console.error('Error creating payment:', error);
+    throw new Error(
+      error.response?.data?.message || 'Failed to create payment'
+    );
   }
-
-  return { error: false, data: responseJson.data };
 }
 
 async function getAllPayments() {
-  const response = await fetchWithToken(`${BASE_URL}/payments`);
-  const responseJson = await response.json();
-
-  if (!response.ok) {
-    return { error: true, data: null };
+  try {
+    const response = await fetchWithToken(`${BASE_URL}/payments`);
+    return { error: false, data: response.data.data };
+  } catch (error) {
+    console.error('Error fetching payments:', error);
+    throw new Error(
+      error.response?.data?.message || 'Failed to fetch payments'
+    );
   }
-
-  return { error: false, data: responseJson.data };
 }
 
 async function getOnePayments(id) {
-  const response = await fetchWithToken(`${BASE_URL}/payments/${id}`);
-  const responseJson = await response.json();
-
-  if (!response.ok) {
-    return { error: true, data: null };
+  try {
+    const response = await fetchWithToken(`${BASE_URL}/payments/${id}`);
+    return { error: false, data: response.data.data };
+  } catch (error) {
+    console.error('Error fetching payment:', error);
+    throw new Error(error.response?.data?.message || 'Failed to fetch payment');
   }
-
-  return { error: false, data: responseJson.data };
 }
 
 export {
