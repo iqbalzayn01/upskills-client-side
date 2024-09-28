@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import config from '../../config';
 
 import { fetchAllSchedules } from '../../redux/schedules/actions';
 import { fetchAllRegistration } from '../../redux/registration/actions';
@@ -18,7 +17,6 @@ export default function CEventsList() {
   const getToken = useSelector((state) => state.auth.token);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const BASE_URL = config.url;
 
   useEffect(() => {
     dispatch(fetchAllSchedules());
@@ -63,7 +61,7 @@ export default function CEventsList() {
                 {schedule.eventID.imageID &&
                   schedule.eventID.imageID.fileName && (
                     <img
-                      src={`${BASE_URL}${schedule.eventID.imageID.fileName}`}
+                      src={`${schedule.eventID.imageID.fileUrl}`}
                       alt={schedule.eventID.name}
                       className="w-full h-full object-cover rounded-lg"
                     />

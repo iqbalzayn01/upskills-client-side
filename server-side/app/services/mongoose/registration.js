@@ -52,7 +52,7 @@ const getAllRegistration = async (req, res) => {
     })
     .populate({
       path: 'documentID',
-      select: '_id fileName data_valid',
+      select: '_id fileName fileUrl fileType filePath data_valid',
     })
     .populate({
       path: 'eventID',

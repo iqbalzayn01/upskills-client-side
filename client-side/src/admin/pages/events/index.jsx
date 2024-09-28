@@ -1,7 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { format } from 'date-fns';
-import config from '../../../config';
 
 import {
   fetchAllEvents,
@@ -11,6 +10,7 @@ import {
   fetchAllSchedules,
   fetchDeleteSchedule,
 } from '../../../redux/schedules/actions';
+import { fetchDeleteImage } from '../../../redux/uploadImages/actions';
 
 import Sidebar from '../../components/Sidebar';
 import PopUp from '../../components/PopUp';
@@ -27,7 +27,6 @@ export default function DataKegiatan() {
   const [isPopUpOpen, setIsPopUpOpen] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const dispatch = useDispatch();
-  const BASE_URL = config.url;
 
   useEffect(() => {
     dispatch(fetchAllEvents());
@@ -38,7 +37,6 @@ export default function DataKegiatan() {
     return format(new Date(dateTime), 'dd MMM yyyy, HH:mm');
   };
 
-  // Events
   const formatPrice = (price) => {
     return price.toLocaleString('id-ID');
   };
@@ -47,6 +45,11 @@ export default function DataKegiatan() {
     setIsEdit(false);
     setSelectedEvent(null);
     setIsModalOpen(true);
+  };
+
+  const handleCreateSchedule = (id) => {
+    setSelectEventID(id);
+    setScheduleOpen(true);
   };
 
   const handleEdit = (eventData) => {
@@ -60,20 +63,30 @@ export default function DataKegiatan() {
     setIsPopUpOpen(true);
   };
 
-  const handleDeleteEvent = () => {
-    dispatch(fetchDeleteEvent(selectEventID));
-    setIsPopUpOpen(false);
-  };
+  const handleDeleteEvent = async () => {
+    try {
+      const relatedSchedules = schedules.filter(
+        (schedule) => schedule?.eventID?._id === selectEventID
+      );
 
-  // Schedules
-  const handleCreateSchedule = (id) => {
-    setSelectEventID(id);
-    setScheduleOpen(true);
-  };
+      const relatedImgEvent = events.find(
+        (event) => event?._id === selectEventID
+      );
 
-  const handleDeleteSchedule = (id) => {
-    dispatch(fetchDeleteSchedule(id));
-    setIsPopUpOpen(false);
+      if (relatedImgEvent && relatedImgEvent.imageID?._id) {
+        await dispatch(fetchDeleteImage(relatedImgEvent.imageID._id));
+      }
+
+      for (const schedule of relatedSchedules) {
+        await dispatch(fetchDeleteSchedule(schedule?._id));
+      }
+
+      await dispatch(fetchDeleteEvent(selectEventID));
+
+      setIsPopUpOpen(false);
+    } catch (error) {
+      console.error('Error deleting event and schedules:', error);
+    }
   };
 
   return (
@@ -106,7 +119,7 @@ export default function DataKegiatan() {
                   <div className="flex flex-col gap-6">
                     {event.imageID && event.imageID.fileName && (
                       <img
-                        src={`${BASE_URL}${event.imageID.fileName}`}
+                        src={`${event.imageID.fileUrl}`}
                         alt={event.name}
                         className="w-full h-auto rounded-lg"
                       />
@@ -122,30 +135,24 @@ export default function DataKegiatan() {
                       {eventSchedules.length > 0 ? (
                         eventSchedules.map((schedule, index) => (
                           <div key={index}>
-                            <p>Talent: {schedule.talentID.name}</p>
+                            <p>Talent: {schedule?.talentID?.name}</p>
                             <div>
                               <p className="font-semibold">Jadwal:</p>
-                              {schedule.schedules.map((time, subIndex) => (
+                              {schedule?.schedules.map((time, subIndex) => (
                                 <div key={subIndex}>
                                   <p>
-                                    Mulai: {formatDateTime(time.start_time)}
+                                    Mulai: {formatDateTime(time?.start_time)}
                                   </p>
                                   <p>
-                                    Selesai: {formatDateTime(time.end_time)}
+                                    Selesai: {formatDateTime(time?.end_time)}
                                   </p>
                                 </div>
                               ))}
                             </div>
                             <p className="font-semibold">
                               batas Pendaftaran:{' '}
-                              {formatDateTime(schedule.batas_daftar)}
+                              {formatDateTime(schedule?.batas_daftar)}
                             </p>
-                            <button
-                              className="bg-red-500 text-white px-2 py-1 rounded"
-                              onClick={() => handleDeleteSchedule(schedule._id)}
-                            >
-                              Hapus
-                            </button>
                           </div>
                         ))
                       ) : (

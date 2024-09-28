@@ -8,17 +8,20 @@ const {
 
 const { StatusCodes } = require('http-status-codes');
 
-const create = async (req, res) => {
+const create = async (req, res, next) => {
   try {
-    console.log('req.file');
-    console.log(req.file);
+    if (!req.file) {
+      return res.status(StatusCodes.BAD_REQUEST).send('No file uploaded.');
+    }
 
-    const result = await createImages(req);
+    const result = await createImages(req.file);
 
     res.status(StatusCodes.CREATED).json({
+      msg: 'File uploaded successfully',
       data: result,
     });
   } catch (err) {
+    console.error('Error in createImages:', err);
     next(err);
   }
 };

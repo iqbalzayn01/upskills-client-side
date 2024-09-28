@@ -10,6 +10,10 @@ const uploadSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    fileUrl: String,
+    fileType: String,
+    filePath: String,
+    uploadDate: { type: Date, default: Date.now },
     data_valid: {
       type: String,
       enum: ['Belum Diperiksa', 'Data Valid', 'Data Tidak Valid'],

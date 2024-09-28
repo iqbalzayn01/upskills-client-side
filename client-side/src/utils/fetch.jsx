@@ -512,6 +512,20 @@ async function getOneImages(id) {
   }
 }
 
+async function deleteImages(id) {
+  try {
+    await fetchWithToken(`${BASE_URL}/images/${id}`, {
+      method: 'DELETE',
+    });
+
+    return { error: false };
+  } catch (error) {
+    alert(error.response?.data?.msg || 'Failed to delete images');
+    console.error('Error deleting images:', error);
+    throw new Error(error.response?.data?.message || 'Failed to delete images');
+  }
+}
+
 async function createPayments(registrationID) {
   try {
     const response = await fetchWithToken(`${BASE_URL}/create-payments`, {
@@ -587,6 +601,7 @@ export {
   uploadImages,
   getAllImages,
   getOneImages,
+  deleteImages,
   createPayments,
   getAllPayments,
   getOnePayments,

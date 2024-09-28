@@ -9,7 +9,6 @@ export const userLogged = () => async (dispatch) => {
   try {
     const res = await getUserLogged();
     const dataUser = res.data;
-    console.log('action auth', dataUser);
     dispatch(setOneUser(dataUser));
   } catch (error) {
     console.error('Get User Logged Error:', error);
@@ -19,7 +18,6 @@ export const userLogged = () => async (dispatch) => {
 export const signIn = (formData) => async (dispatch) => {
   try {
     const res = await login(formData);
-    console.log('res', res.data);
     const { token, refreshToken, _id, role } = res.data;
     dispatch(setToken({ token, refreshToken, _id, role }));
   } catch (error) {

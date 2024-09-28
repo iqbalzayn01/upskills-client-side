@@ -1,40 +1,11 @@
 const multer = require('multer');
-const path = require('path');
-const fs = require('fs');
 
-// Direktori untuk dokumen
-const documentUploadDirectory = path.join(
-  __dirname,
-  '../../public/uploads/documents/'
-);
-if (!fs.existsSync(documentUploadDirectory)) {
-  fs.mkdirSync(documentUploadDirectory, { recursive: true });
-}
-
-// Direktori untuk gambar
-const imageUploadDirectory = path.join(
-  __dirname,
-  '../../public/uploads/images/'
-);
-if (!fs.existsSync(imageUploadDirectory)) {
-  fs.mkdirSync(imageUploadDirectory, { recursive: true });
-}
-
-// Konfigurasi untuk dokumen
-const documentStorage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, documentUploadDirectory);
-  },
-  filename: function (req, file, cb) {
-    cb(null, Math.floor(Math.random() * 99999999) + '-' + file.originalname);
-  },
-});
+// documents config
+const documentStorage = multer.memoryStorage();
 
 const documentFileFilter = (req, file, cb) => {
   const allowedTypes = /pdf/;
-  const extname = allowedTypes.test(
-    path.extname(file.originalname).toLowerCase()
-  );
+  const extname = allowedTypes.test(file.originalname.toLowerCase());
   const mimetype = allowedTypes.test(file.mimetype);
 
   if (extname && mimetype) {
@@ -49,21 +20,12 @@ const documentFileFilter = (req, file, cb) => {
   }
 };
 
-// Konfigurasi untuk gambar
-const imageStorage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, imageUploadDirectory);
-  },
-  filename: function (req, file, cb) {
-    cb(null, Math.floor(Math.random() * 99999999) + '-' + file.originalname);
-  },
-});
+// images config
+const imageStorage = multer.memoryStorage();
 
 const imageFileFilter = (req, file, cb) => {
   const allowedTypes = /jpeg|jpg|png/;
-  const extname = allowedTypes.test(
-    path.extname(file.originalname).toLowerCase()
-  );
+  const extname = allowedTypes.test(file.originalname.toLowerCase());
   const mimetype = allowedTypes.test(file.mimetype);
 
   if (extname && mimetype) {
@@ -78,16 +40,16 @@ const imageFileFilter = (req, file, cb) => {
   }
 };
 
-// Inisialisasi multer untuk dokumen
+// init documents
 const documentUploadMiddleware = multer({
   storage: documentStorage,
   limits: {
-    fileSize: 20000000, // 20 mb
+    fileSize: 10000000, // 10 mb
   },
   fileFilter: documentFileFilter,
 });
 
-// Inisialisasi multer untuk gambar
+// init images
 const imageUploadMiddleware = multer({
   storage: imageStorage,
   limits: {

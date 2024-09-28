@@ -3,7 +3,11 @@ const { model, Schema } = mongoose;
 
 let imageSchema = Schema(
   {
-    fileName: { type: String },
+    fileName: String,
+    fileUrl: String,
+    fileType: String,
+    filePath: String,
+    uploadDate: { type: Date, default: Date.now },
   },
   { timestamps: true }
 );

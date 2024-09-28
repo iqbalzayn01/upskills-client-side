@@ -51,7 +51,7 @@ const getAllEvents = async (req) => {
 
   const result = await Events.find(condition).populate({
     path: 'imageID',
-    select: '_id fileName',
+    select: '_id fileName fileUrl fileType filePath',
   });
 
   return result;
@@ -62,7 +62,7 @@ const getOneEvents = async (req) => {
 
   const result = await Events.findOne({ _id: id }).populate({
     path: 'imageID',
-    select: '_id fileName',
+    select: '_id fileName fileUrl fileType filePath',
   });
 
   if (!result) throw new NotFoundError(`Tidak ada kegiatan dengan id :  ${id}`);

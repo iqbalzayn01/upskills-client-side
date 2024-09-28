@@ -57,7 +57,7 @@ export default function Header() {
                 onClick={() => navigate('/dashboard-peserta')}
                 className="flex items-center justify-center bg-black dark:bg-white text-white dark:text-black px-3 py-2 rounded-lg"
               >
-                {`Hi, ${user.name}`}
+                {`Hi, ${user.name || ''}`}
               </CButton>
               <CButton
                 onClick={handleSignOut}

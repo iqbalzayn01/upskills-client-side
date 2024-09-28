@@ -1,16 +1,66 @@
 const UploadDocument = require('../../api/v1/uploadDocument/model');
+const {
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+  deleteObject,
+} = require('firebase/storage');
+const { storage } = require('../../firebase.config');
 const { BadRequestError, NotFoundError } = require('../../errors');
 
-const uploadDocuments = async (req) => {
-  const { filename } = req.file;
-  const { data_valid } = req.body;
+const uploadToFirebase = async (file) => {
+  const fileName = `${Date.now()}_${file.originalname}`;
+  let folderPath;
 
-  const result = await UploadDocument.create({
-    fileName: `uploads/documents/${filename}`,
-    data_valid,
-  });
+  if (file.mimetype.startsWith('application/pdf')) {
+    folderPath = 'uploads/documents';
+  } else {
+    throw new BadRequestError(
+      'Invalid file format. Only document are allowed.'
+    );
+  }
 
-  return result;
+  const storageRef = ref(storage, `${folderPath}/${fileName}`);
+  const metadata = {
+    contentType: file.mimetype,
+  };
+  try {
+    const snapshot = await uploadBytesResumable(
+      storageRef,
+      file.buffer,
+      metadata
+    );
+    const downloadURL = await getDownloadURL(snapshot.ref);
+
+    return { fileName, downloadURL, filePath: `${folderPath}/${fileName}` };
+  } catch (error) {
+    console.error('Error uploading document to Firebase:', error);
+    throw new Error('Error uploading document to Firebase');
+  }
+};
+
+const uploadDocuments = async (req, file) => {
+  try {
+    const { fileName, downloadURL, filePath } = await uploadToFirebase(file);
+    const { data_valid } = req.body;
+
+    const result = await UploadDocument.create({
+      fileName,
+      fileUrl: downloadURL,
+      fileType: file.mimetype,
+      filePath: filePath,
+      data_valid,
+    });
+
+    return result;
+  } catch (error) {
+    console.error('Error creating document:', error);
+
+    if (error.code && error.code.startsWith('storage/')) {
+      throw new BadRequestError(`Firebase Storage error: ${error.message}`);
+    }
+    throw new Error('Error creating document');
+  }
 };
 
 const getAllDocuments = async (req) => {
@@ -56,6 +106,16 @@ const deleteDocuments = async (req) => {
 
   if (!result) throw new NotFoundError(`Tidak ada dokumen dengan id :  ${id}`);
 
+  // Delete from Firebase Storage
+  try {
+    const storageRef = ref(storage, result.filePath);
+    await deleteObject(storageRef);
+    console.log('File deleted successfully from Firebase Storage');
+  } catch (error) {
+    console.error('Error deleting file from Firebase Storage:', error);
+  }
+
+  // Delete from MongoDB
   await result.deleteOne({ _id: id });
 
   return result;

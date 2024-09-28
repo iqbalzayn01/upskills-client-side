@@ -9,9 +9,14 @@ const {
 const { StatusCodes } = require('http-status-codes');
 
 const create = async (req, res, next) => {
+  if (!req.file) {
+    return res.status(StatusCodes.BAD_REQUEST).send('No file uploaded.');
+  }
+
   try {
-    const result = await uploadDocuments(req);
+    const result = await uploadDocuments(req, req.file);
     res.status(StatusCodes.CREATED).json({
+      msg: 'File uploaded successfully',
       data: result,
     });
   } catch (err) {

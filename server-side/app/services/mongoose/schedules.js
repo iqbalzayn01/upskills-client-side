@@ -50,7 +50,7 @@ const getAllSchedules = async (req) => {
         '_id id_event name description event_status location price linkMeeting imageID kuota',
       populate: {
         path: 'imageID',
-        select: '_id fileName',
+        select: '_id fileName fileUrl fileType filePath',
       },
     });
 
@@ -71,7 +71,7 @@ const getOneSchedules = async (req) => {
         '_id id_event name description event_status location price linkMeeting imageID kuota',
       populate: {
         path: 'imageID',
-        select: '_id fileName',
+        select: '_id fileName fileUrl fileType filePath',
       },
     });
 

@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { createUploadImage, setImages } from './actions';
+import { createUploadImage, setImages, removeImage } from './actions';
 
 const initialState = {
   images: [],
@@ -12,6 +12,11 @@ const uploadImagesReducer = createReducer(initialState, (builder) => {
     })
     .addCase(setImages, (state, action) => {
       state.images = action.payload;
+    })
+    .addCase(removeImage, (state, action) => {
+      state.images = state.images.filter(
+        (image) => image._id !== action.payload
+      );
     });
 });
 
