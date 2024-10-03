@@ -1,31 +1,33 @@
 import PropTypes from 'prop-types';
-
 import { Link } from 'react-router-dom';
+
+import CSearch from '../CSearch';
+
+const links = [
+  {
+    name: 'About',
+    url: '/about',
+  },
+  {
+    name: 'Events',
+    url: '/events',
+  },
+  {
+    name: 'Blog',
+    url: '/blog',
+  },
+];
 
 export default function Navbar({ className }) {
   return (
     <nav>
       <ul className={className}>
-        <li>
-          <Link to="/#tentang" className="hover:text-slate-500">
-            Tentang
-          </Link>
-        </li>
-        <li>
-          <Link to="/#blog" className="hover:text-slate-500">
-            Blog
-          </Link>
-        </li>
-        <li>
-          <Link to="/kegiatan-pelatihan" className="hover:text-slate-500">
-            Pelatihan
-          </Link>
-        </li>
-        <li>
-          <Link to="/kontak-kami" className="hover:text-slate-500">
-            Kontak Kami
-          </Link>
-        </li>
+        {links.map((link) => (
+          <li key={link.name} className="text-white hover:text-primarycolor">
+            <Link to={link.url}>{link.name}</Link>
+          </li>
+        ))}
+        <CSearch />
       </ul>
     </nav>
   );

@@ -27,13 +27,16 @@ export default function Hero() {
   };
 
   return (
-    <div className="container-base p-5">
-      <div className="flex flex-col h-[600px] items-center justify-center gap-5">
-        <h1 className="text-center text-7xl">
-          Transformasikan Keahlian Anda dengan Pelatihan Profesional
+    <div className="container-base bg-black p-5">
+      <div className="flex flex-col h-[600px] items-start justify-center gap-5">
+        <h1 className="text-7xl text-white">
+          Future-Proof Your Skills, Stay Ahead of the Curve.
         </h1>
-        <p className="w-1/2 text-center text-xl mb-2">
-          Bersiap untuk Masa Depan dengan Pengetahuan dan Keterampilan Terbaru
+        <p className="text-xl text-white mb-2">
+          Upskills empowers you with the knowledge and expertise to thrive in
+          the ever-changing professional landscape. Acquire in-demand skills,
+          advance your career, and unlock your full potential with our curated
+          online courses led by industry experts.
         </p>
         <CButton
           onClick={register}
