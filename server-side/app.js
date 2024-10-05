@@ -45,11 +45,15 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/', (req, res) => {
-  res.status(200).json({
-    message: `Welcome to API UpSkills`,
-  });
-});
+// app.get('/', (req, res) => {
+//   res.status(200).json({
+//     message: `Welcome to API UpSkills`,
+//   });
+// });
+
+app.get('/', (req, res) => res.send('Welcome to API UpSkills'));
+
+app.listen(3000, () => console.log('Server ready on port 9000.'));
 
 // App Router
 app.use(`${v1}/cms`, authCMSRouter);
