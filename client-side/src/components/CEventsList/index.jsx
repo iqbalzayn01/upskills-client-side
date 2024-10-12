@@ -48,63 +48,63 @@ export default function CEventsList() {
   return (
     <div className="container-base p-5 mb-20">
       <div className="flex flex-col gap-5">
-        <h2 className="font-semibold text-2xl text-center mb-5">
-          Daftar Kegiatan Pelatihan
-        </h2>
-        {filteredSchedules.length > 0 ? (
-          filteredSchedules.map((schedule) => (
-            <div
-              key={schedule._id}
-              className="grid grid-cols-4 gap-5 p-6 bg-black rounded-xl"
-            >
-              <div className="col-span-2">
-                {schedule.eventID.imageID &&
-                  schedule.eventID.imageID.fileName && (
-                    <img
-                      src={`${schedule.eventID.imageID.fileUrl}`}
-                      alt={schedule.eventID.name}
-                      className="w-full h-full object-cover rounded-lg"
-                    />
-                  )}
-              </div>
-              <div className="col-span-2 flex flex-col justify-between gap-5">
-                <Link
-                  to={`/detail-kegiatan-pelatihan/${schedule._id}`}
-                  className="judul-pelatihan text-3xl font-semibold text-primarycolor hover:underline"
-                >
-                  {schedule.eventID.name}
-                </Link>
-                <div className="jadwal">
-                  {schedule.schedules.map((time, subIndex) => (
-                    <div key={subIndex} className="flex gap-10">
-                      <p className="text-white">
-                        <span>Mulai:</span> {formatDateTime(time.start_time)}
-                      </p>
-                      <p className="text-white">
-                        <span>Selesai:</span> {formatDateTime(time.end_time)}
-                      </p>
-                    </div>
-                  ))}
+        <h2 className="w-1/4 text-[40px] text-white">Featured Events</h2>
+        <div className="w-full flex flex-nowrap items-start gap-12 whitespace-nowrap overflow-x-hidden">
+          {filteredSchedules.length > 0 ? (
+            filteredSchedules.map((schedule) => (
+              <div
+                key={schedule._id}
+                className="w-[524px] bg-transparent flex flex-col gap-8 border border-white p-6 rounded-xl"
+              >
+                <div className="">
+                  {schedule.eventID.imageID &&
+                    schedule.eventID.imageID.fileName && (
+                      <img
+                        src={`${schedule.eventID.imageID.fileUrl}`}
+                        alt={schedule.eventID.name}
+                        className="w-full h-full object-cover rounded-lg"
+                      />
+                    )}
                 </div>
-                <p className="text-lg text-white">
-                  {schedule.eventID.description}
-                </p>
-                <div className="flex flex-col gap-2">
-                  <p className="bg-white text-black text-center font-bold uppercase px-3 py-2 rounded-lg">
-                    {schedule.eventID.event_status}
+                <div className=" flex flex-col justify-between gap-5">
+                  <Link
+                    to={`/detail-kegiatan-pelatihan/${schedule._id}`}
+                    className="judul-pelatihan text-3xl font-semibold text-primarycolor hover:underline"
+                  >
+                    {schedule.eventID.name}
+                  </Link>
+                  <div className="jadwal">
+                    {schedule.schedules.map((time, subIndex) => (
+                      <div key={subIndex} className="flex gap-10">
+                        <p className="text-white">
+                          <span>Mulai:</span> {formatDateTime(time.start_time)}
+                        </p>
+                        <p className="text-white">
+                          <span>Selesai:</span> {formatDateTime(time.end_time)}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                  <p className="text-lg text-white text-wrap">
+                    {schedule.eventID.description}
                   </p>
-                </div>
-                <div className="flex gap-10">
-                  <p className="text-white mt-3">
-                    <span>Narasumber:</span> {schedule.talentID.name}
-                  </p>
-                  <p className="text-white mt-3">
-                    <span>Price:</span> Rp.{' '}
-                    {formatPrice(schedule.eventID.price)}
-                  </p>
-                  <p className="text-white mt-3">
-                    <span>Kuota:</span> {schedule.eventID.kuota}
-                  </p>
+                  <div className="flex flex-col gap-2">
+                    <p className="bg-white text-black text-center font-bold uppercase px-3 py-2 rounded-lg">
+                      {schedule.eventID.event_status}
+                    </p>
+                  </div>
+                  <div className="flex gap-10 whitespace-normal">
+                    <p className="text-white mt-3">
+                      <span>Narasumber:</span> {schedule.talentID.name}
+                    </p>
+                    <p className="text-white mt-3">
+                      <span>Price:</span> Rp.{' '}
+                      {formatPrice(schedule.eventID.price)}
+                    </p>
+                    <p className="text-white mt-3">
+                      <span>Kuota:</span> {schedule.eventID.kuota}
+                    </p>
+                  </div>
                 </div>
                 <CButton
                   onClick={() =>
@@ -129,13 +129,13 @@ export default function CEventsList() {
                   </svg>
                 </CButton>
               </div>
-            </div>
-          ))
-        ) : (
-          <p className="text-center text-gray-500">
-            Belum ada kegiatan pelatihan yang tersedia
-          </p>
-        )}
+            ))
+          ) : (
+            <p className="text-center text-gray-500">
+              Belum ada kegiatan pelatihan yang tersedia
+            </p>
+          )}
+        </div>
       </div>
     </div>
   );

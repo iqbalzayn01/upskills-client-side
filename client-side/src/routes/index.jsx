@@ -34,7 +34,7 @@ const router = createBrowserRouter(
       <Route path="/*" element={<Home />} />
       <Route path="/signin" element={<SignIn />} />
       <Route path="/signup" element={<SignUp />} />
-      <Route path="/kegiatan-pelatihan" element={<EventsLists />} />
+      <Route path="/events" element={<EventsLists />} />
       <Route path="/detail-kegiatan-pelatihan/:id" element={<EventDetail />} />
       <Route element={<RequireAdmin />}>
         <Route path="/dashboard-admin/*" element={<Dashboard />} />
